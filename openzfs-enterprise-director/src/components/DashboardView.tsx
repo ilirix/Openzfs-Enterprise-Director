@@ -44,7 +44,7 @@ export const DashboardView: React.FC<Props> = ({
   onScrub,
   onInspectDevice,
   onOpenHardwareInfo,
-  lang = 'sq',
+  lang = 'en',
 }) => {
   const { pools, datasets, snapshots, arc, availableDisks = [] } = state;
   const t = (key: string) => TRANSLATIONS[lang]?.[key] || key;

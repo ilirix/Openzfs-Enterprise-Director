@@ -41,7 +41,7 @@ interface HistoryPoint {
 }
 
 export const ZfsResourceUtilizationWidget: React.FC<Props> = ({
-  lang = 'sq',
+  lang = 'en',
   onNavigateToArc,
 }) => {
   const t = (key: string) => TRANSLATIONS[lang]?.[key] || key;
@@ -206,7 +206,7 @@ export const ZfsResourceUtilizationWidget: React.FC<Props> = ({
                 ? 'bg-slate-900 hover:bg-slate-800 border-slate-700 text-slate-300'
                 : 'bg-emerald-950 hover:bg-emerald-900 border-emerald-700 text-emerald-300'
             }`}
-            title={isLive ? 'Pauzizo transmetimin live' : 'Fillo transmetimin live'}
+            title={isLive ? (lang === 'sq' ? 'Pauzizo transmetimin live' : 'Pause live stream') : (lang === 'sq' ? 'Fillo transmetimin live' : 'Start live stream')}
           >
             {isLive ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
           </button>
@@ -216,7 +216,7 @@ export const ZfsResourceUtilizationWidget: React.FC<Props> = ({
             onClick={fetchUtilization}
             disabled={loading}
             className="p-2 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 text-xs transition cursor-pointer disabled:opacity-50"
-            title="Rifresko menjehere"
+            title={lang === 'sq' ? 'Rifresko menjehere' : 'Refresh now'}
           >
             <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
           </button>
@@ -580,7 +580,7 @@ export const ZfsResourceUtilizationWidget: React.FC<Props> = ({
             {ops.compressionRatio}x <span className="text-xs text-emerald-500 font-normal">LZ4</span>
           </div>
           <span className="text-[10px] text-slate-500 font-sans block">
-            {ops.compressionSavingsGb.toLocaleString()} GB kursyer në flash/disk
+            {ops.compressionSavingsGb.toLocaleString()}{lang === 'sq' ? ' GB kursyer në flash/disk' : ' GB saved on flash/disk'}
           </span>
         </div>
 
@@ -597,7 +597,7 @@ export const ZfsResourceUtilizationWidget: React.FC<Props> = ({
             <span className="text-xs text-slate-500 font-normal ml-1">MB/s</span>
           </div>
           <span className="text-[10px] text-slate-500 font-sans block">
-            Lexim (ARC) / Shkrim (TXG)
+            {lang === 'sq' ? 'Lexim (ARC) / Shkrim (TXG)' : 'Read (ARC) / Write (TXG)'}
           </span>
         </div>
       </div>
@@ -625,7 +625,7 @@ export const ZfsResourceUtilizationWidget: React.FC<Props> = ({
           <div className="mt-3 pt-3 border-t border-slate-800/80 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-slate-300 leading-relaxed">
             <div className="space-y-1.5">
               <span className="font-bold text-purple-300 font-mono block">
-                1. Metatëdhënat (Dnodes, B-Trees & Inodes):
+                {lang === 'sq' ? '1. Metatëdhënat (Dnodes, B-Trees & Inodes):' : '1. Metadata (dnodes, B-trees & inodes):'}
               </span>
               <p className="text-[11px] text-slate-400">
                 {lang === 'sq'
@@ -636,7 +636,7 @@ export const ZfsResourceUtilizationWidget: React.FC<Props> = ({
 
             <div className="space-y-1.5">
               <span className="font-bold text-sky-300 font-mono block">
-                2. Të Dhënat e Përdoruesit & Pipeline ZIO:
+                {lang === 'sq' ? '2. Të Dhënat e Përdoruesit & Pipeline ZIO:' : '2. User data & the ZIO pipeline:'}
               </span>
               <p className="text-[11px] text-slate-400">
                 {lang === 'sq'

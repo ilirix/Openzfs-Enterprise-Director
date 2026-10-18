@@ -36,7 +36,7 @@ export const DatasetsView: React.FC<Props> = ({
   onCreateDataset,
   onUpdateDataset,
   onDestroyDataset,
-  lang = 'sq',
+  lang = 'en',
   onRequestDangerConfirm,
 }) => {
   const [selectedDataset, setSelectedDataset] = useState<Dataset | null>(datasets[0] || null);
@@ -146,7 +146,7 @@ export const DatasetsView: React.FC<Props> = ({
             <FolderTree className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-xs text-slate-400 font-mono">Hierarkia e Skedareve & Vetimeve</div>
+            <div className="text-xs text-slate-400 font-mono">{lang === 'sq' ? 'Hierarkia e Skedareve & Vetimeve' : 'Filesystem & Volume Hierarchy'}</div>
             <h2 className="text-sm font-bold text-white">
               OpenZFS Filesystems & Virtual Volumes (ZVOL)
             </h2>
@@ -207,7 +207,7 @@ export const DatasetsView: React.FC<Props> = ({
                     </div>
 
                     <div className="flex items-center justify-between text-[11px] text-slate-400 font-mono mt-1.5">
-                      <span>Perdorur: {d.used}</span>
+                      <span>{lang === 'sq' ? 'Perdorur: ' : 'Used: '}{d.used}</span>
                       <span>Comp: {d.compression} ({d.compressratio})</span>
                     </div>
                   </button>
@@ -217,7 +217,7 @@ export const DatasetsView: React.FC<Props> = ({
           </div>
 
           <div className="p-3 rounded-lg bg-[#070c18] border border-slate-800 text-[11px] text-slate-400">
-            <span>Zgjidh nje dataset per te modifikuar vetite ne kohe reale.</span>
+            <span>{lang === 'sq' ? 'Zgjidh nje dataset per te modifikuar vetite ne kohe reale.' : 'Select a dataset to change its properties live.'}</span>
           </div>
         </div>
 
@@ -227,7 +227,7 @@ export const DatasetsView: React.FC<Props> = ({
             <div className="flex items-center justify-between pb-3 border-b border-slate-800/80">
               <div>
                 <span className="text-xs text-indigo-400 font-mono font-semibold uppercase">
-                  Vetite e Dataset-it
+                  {lang === 'sq' ? 'Vetite e Dataset-it' : 'Dataset Properties'}
                 </span>
                 <h3 className="text-base font-bold text-white font-mono mt-0.5">
                   {selectedDataset.name}
@@ -251,7 +251,7 @@ export const DatasetsView: React.FC<Props> = ({
                     }
                   }}
                   className="p-1.5 text-rose-400 hover:bg-rose-950/40 rounded transition-colors cursor-pointer"
-                  title="Fshi Dataset-in (zfs destroy)"
+                  title={lang === 'sq' ? 'Fshi Dataset-in (zfs destroy)' : 'Destroy dataset (zfs destroy)'}
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -261,19 +261,19 @@ export const DatasetsView: React.FC<Props> = ({
             {/* Quick Metrics Strip */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs font-mono">
               <div className="p-2.5 rounded-lg bg-[#070d1c] border border-slate-800">
-                <span className="text-slate-500 block text-[10px]">HAPESIRA USED</span>
+                <span className="text-slate-500 block text-[10px]">{lang === 'sq' ? 'HAPESIRA USED' : 'USED SPACE'}</span>
                 <span className="text-white font-bold">{selectedDataset.used}</span>
               </div>
               <div className="p-2.5 rounded-lg bg-[#070d1c] border border-slate-800">
-                <span className="text-slate-500 block text-[10px]">E DISPONUESHME</span>
+                <span className="text-slate-500 block text-[10px]">{lang === 'sq' ? 'E DISPONUESHME' : 'AVAILABLE'}</span>
                 <span className="text-slate-300 font-bold">{selectedDataset.avail}</span>
               </div>
               <div className="p-2.5 rounded-lg bg-[#070d1c] border border-slate-800">
-                <span className="text-slate-500 block text-[10px]">RAPORTI I KOMPRESIMIT</span>
+                <span className="text-slate-500 block text-[10px]">{lang === 'sq' ? 'RAPORTI I KOMPRESIMIT' : 'COMPRESSION RATIO'}</span>
                 <span className="text-emerald-400 font-bold">{selectedDataset.compressratio}</span>
               </div>
               <div className="p-2.5 rounded-lg bg-[#070d1c] border border-slate-800">
-                <span className="text-slate-500 block text-[10px]">ENKRIPTIMI</span>
+                <span className="text-slate-500 block text-[10px]">{lang === 'sq' ? 'ENKRIPTIMI' : 'ENCRYPTION'}</span>
                 <span className="text-sky-300 font-bold">{selectedDataset.encryption}</span>
               </div>
             </div>
@@ -282,51 +282,51 @@ export const DatasetsView: React.FC<Props> = ({
             <div className="space-y-4">
               <h4 className="text-xs font-semibold uppercase text-slate-400 tracking-wider flex items-center gap-1.5">
                 <Sliders className="w-3.5 h-3.5 text-indigo-400" />
-                Modifiko Parametrat ZFS (Live Property Tuning)
+                {lang === 'sq' ? 'Modifiko Parametrat ZFS (Live Property Tuning)' : 'Edit ZFS Properties (Live Property Tuning)'}
               </h4>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 {/* Compression */}
                 <div className="space-y-1.5">
-                  <label className="text-slate-300 font-medium">Algoritmi i Kompresimit (compression):</label>
+                  <label className="text-slate-300 font-medium">{lang === 'sq' ? 'Algoritmi i Kompresimit (compression):' : 'Compression algorithm (compression):'}</label>
                   <select
                     value={editCompression}
                     onChange={(e) => setEditCompression(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-indigo-500 focus:outline-none"
                   >
-                    <option value="zstd">zstd (Default - Balancë e lartë raport/CPU)</option>
-                    <option value="zstd-3">zstd-3 (Optimizuar per arkiva)</option>
-                    <option value="lz4">lz4 (Ultra e shpejtë, kosto zero CPU)</option>
-                    <option value="gzip-6">gzip-6 (Kompresim maksimal klasik)</option>
-                    <option value="off">off (I çaktivizuar)</option>
+                    <option value="zstd">{lang === 'sq' ? 'zstd (Default - Balancë e lartë raport/CPU)' : 'zstd (Default - high ratio/CPU balance)'}</option>
+                    <option value="zstd-3">{lang === 'sq' ? 'zstd-3 (Optimizuar per arkiva)' : 'zstd-3 (Tuned for archives)'}</option>
+                    <option value="lz4">{lang === 'sq' ? 'lz4 (Ultra e shpejtë, kosto zero CPU)' : 'lz4 (Very fast, near-zero CPU cost)'}</option>
+                    <option value="gzip-6">{lang === 'sq' ? 'gzip-6 (Kompresim maksimal klasik)' : 'gzip-6 (Classic maximum compression)'}</option>
+                    <option value="off">{lang === 'sq' ? 'off (I çaktivizuar)' : 'off (Disabled)'}</option>
                   </select>
                 </div>
 
                 {/* Recordsize */}
                 <div className="space-y-1.5">
-                  <label className="text-slate-300 font-medium">Madhesia e Rekordit (recordsize):</label>
+                  <label className="text-slate-300 font-medium">{lang === 'sq' ? 'Madhesia e Rekordit (recordsize):' : 'Record size (recordsize):'}</label>
                   <select
                     value={editRecordsize}
                     onChange={(e) => setEditRecordsize(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-indigo-500 focus:outline-none"
                   >
-                    <option value="8K">8K (Per VM zvols ose MSSQL)</option>
-                    <option value="16K">16K (Optimizuar per PostgreSQL & MySQL)</option>
-                    <option value="64K">64K (Mesatare per aplikacione web)</option>
-                    <option value="128K">128K (Standardi i ZFS per General Storage)</option>
-                    <option value="1M">1M (Optimizuar per Video Streaming & Backups)</option>
+                    <option value="8K">{lang === 'sq' ? '8K (Per VM zvols ose MSSQL)' : '8K (VM zvols or MSSQL)'}</option>
+                    <option value="16K">{lang === 'sq' ? '16K (Optimizuar per PostgreSQL & MySQL)' : '16K (Tuned for PostgreSQL & MySQL)'}</option>
+                    <option value="64K">{lang === 'sq' ? '64K (Mesatare per aplikacione web)' : '64K (Medium, web applications)'}</option>
+                    <option value="128K">{lang === 'sq' ? '128K (Standardi i ZFS per General Storage)' : '128K (ZFS default, general storage)'}</option>
+                    <option value="1M">{lang === 'sq' ? '1M (Optimizuar per Video Streaming & Backups)' : '1M (Tuned for video streaming & backups)'}</option>
                   </select>
                 </div>
 
                 {/* Quota */}
                 <div className="space-y-1.5">
-                  <label className="text-slate-300 font-medium">Kuota e Hapesires (quota):</label>
+                  <label className="text-slate-300 font-medium">{lang === 'sq' ? 'Kuota e Hapesires (quota):' : 'Space quota (quota):'}</label>
                   <select
                     value={editQuota}
                     onChange={(e) => setEditQuota(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-indigo-500 focus:outline-none"
                   >
-                    <option value="none">none (Pa kufizim)</option>
+                    <option value="none">{lang === 'sq' ? 'none (Pa kufizim)' : 'none (No limit)'}</option>
                     <option value="100G">100G</option>
                     <option value="500G">500G</option>
                     <option value="1T">1T</option>
@@ -337,14 +337,14 @@ export const DatasetsView: React.FC<Props> = ({
 
                 {/* atime */}
                 <div className="space-y-1.5">
-                  <label className="text-slate-300 font-medium">Regjistrimi i Kohes se Leximit (atime):</label>
+                  <label className="text-slate-300 font-medium">{lang === 'sq' ? 'Regjistrimi i Kohes se Leximit (atime):' : 'Access time recording (atime):'}</label>
                   <select
                     value={editAtime}
                     onChange={(e) => setEditAtime(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-indigo-500 focus:outline-none"
                   >
-                    <option value="off">off (Rekomanduar: Kursen I/O shkrimesh)</option>
-                    <option value="on">on (Regjistron cdo access time)</option>
+                    <option value="off">{lang === 'sq' ? 'off (Rekomanduar: Kursen I/O shkrimesh)' : 'off (Recommended: saves write I/O)'}</option>
+                    <option value="on">{lang === 'sq' ? 'on (Regjistron cdo access time)' : 'on (Records every access time)'}</option>
                   </select>
                 </div>
 
@@ -356,22 +356,22 @@ export const DatasetsView: React.FC<Props> = ({
                     onChange={(e) => setEditDedup(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-indigo-500 focus:outline-none"
                   >
-                    <option value="off">off (I çaktivizuar - Rekomanduar pa 64GB+ RAM)</option>
-                    <option value="on">on (Aktiv per cdo bllok)</option>
-                    <option value="verify">verify (Aktiv me verifikim bit-me-bit)</option>
+                    <option value="off">{lang === 'sq' ? 'off (I çaktivizuar - Rekomanduar pa 64GB+ RAM)' : 'off (Disabled - recommended without 64GB+ RAM)'}</option>
+                    <option value="on">{lang === 'sq' ? 'on (Aktiv per cdo bllok)' : 'on (Enabled for every block)'}</option>
+                    <option value="verify">{lang === 'sq' ? 'verify (Aktiv me verifikim bit-me-bit)' : 'verify (Enabled with byte-for-byte verify)'}</option>
                   </select>
                 </div>
 
                 {/* readonly */}
                 <div className="space-y-1.5">
-                  <label className="text-slate-300 font-medium">Vetem per Lexim (readonly):</label>
+                  <label className="text-slate-300 font-medium">{lang === 'sq' ? 'Vetem per Lexim (readonly):' : 'Read-only (readonly):'}</label>
                   <select
                     value={editReadonly}
                     onChange={(e) => setEditReadonly(e.target.value)}
                     className="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white font-mono focus:border-indigo-500 focus:outline-none"
                   >
-                    <option value="off">off (I shkrueshem normalisht)</option>
-                    <option value="on">on (Bllokohet per shkrime)</option>
+                    <option value="off">{lang === 'sq' ? 'off (I shkrueshem normalisht)' : 'off (Writable)'}</option>
+                    <option value="on">{lang === 'sq' ? 'on (Bllokohet per shkrime)' : 'on (Writes blocked)'}</option>
                   </select>
                 </div>
               </div>
@@ -382,7 +382,7 @@ export const DatasetsView: React.FC<Props> = ({
                   {saveSuccess && (
                     <span className="text-emerald-400 flex items-center gap-1 font-semibold">
                       <Check className="w-4 h-4" />
-                      Vetite u aplikuan menjehere ne ZFS!
+                      {lang === 'sq' ? 'Vetite u aplikuan menjehere ne ZFS!' : 'Properties applied to ZFS.'}
                     </span>
                   )}
                 </div>
@@ -391,14 +391,14 @@ export const DatasetsView: React.FC<Props> = ({
                   className="px-5 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-500 rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
                 >
                   <Check className="w-3.5 h-3.5" />
-                  Apliko Ndryshimet ne ZFS
+                  {lang === 'sq' ? 'Apliko Ndryshimet ne ZFS' : 'Apply Changes to ZFS'}
                 </button>
               </div>
             </div>
           </div>
         ) : (
           <div className="lg:col-span-2 p-12 text-center text-slate-500">
-            Zgjidh nje dataset nga lista per te pare dhe ndryshuar vetite.
+            {lang === 'sq' ? 'Zgjidh nje dataset nga lista per te pare dhe ndryshuar vetite.' : 'Select a dataset from the list to view and change its properties.'}
           </div>
         )}
       </div>

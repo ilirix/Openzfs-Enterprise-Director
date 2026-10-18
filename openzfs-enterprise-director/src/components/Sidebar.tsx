@@ -176,7 +176,7 @@ export const Sidebar: React.FC<Props> = ({
             <button
               onClick={onToggleLang}
               className="flex items-center gap-1 px-2 py-1 rounded bg-slate-900 hover:bg-slate-800 border border-slate-700/80 text-[11px] font-mono text-slate-300 transition-colors cursor-pointer"
-              title="Ndrysho Gjuhen / Switch Language"
+              title={lang === 'sq' ? 'Ndrysho Gjuhen / Switch Language' : 'Switch language'}
             >
               <Globe className="w-3 h-3 text-sky-400" />
               <span className="uppercase font-bold">{lang}</span>
@@ -187,7 +187,7 @@ export const Sidebar: React.FC<Props> = ({
               <button
                 onClick={onCloseMobile}
                 className="lg:hidden p-1 text-slate-400 hover:text-white rounded-lg transition-colors cursor-pointer"
-                aria-label="Mbyll menune"
+                aria-label={lang === 'sq' ? 'Mbyll menune' : 'Close menu'}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -209,7 +209,7 @@ export const Sidebar: React.FC<Props> = ({
                 : 'bg-slate-800 text-slate-400 border border-slate-700'
             }`}
           >
-            {autoOpenInfo ? 'Aktiv' : 'Manuale'}
+            {autoOpenInfo ? (lang === 'sq' ? 'Aktiv' : 'On') : (lang === 'sq' ? 'Manuale' : 'Manual')}
           </button>
         </div>
       </div>

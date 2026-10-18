@@ -10,12 +10,15 @@ import {
   HardDrive,
   Trash2,
 } from 'lucide-react';
+import { Language } from '../types/zfs';
 
 interface Props {
   onExecute: (command: string) => Promise<{ command: string; output: string; exitCode: number }>;
+  lang?: Language;
 }
 
-export const TerminalView: React.FC<Props> = ({ onExecute }) => {
+export const TerminalView: React.FC<Props> = ({ onExecute, lang = 'en' }) => {
+  const sq = lang === 'sq';
   const [inputCmd, setInputCmd] = useState('zpool status');
   const [history, setHistory] = useState<Array<{ cmd: string; out: string; time: string }>>([]);
   const [loading, setLoading] = useState(false);
@@ -76,7 +79,7 @@ export const TerminalView: React.FC<Props> = ({ onExecute }) => {
             <div>
               <div className="text-xs text-slate-400 font-mono">Linux Root Shell Execution Engine</div>
               <h2 className="text-base font-bold text-white">
-                Konsola e Integruar e Komandave OpenZFS
+                {sq ? 'Konsola e Integruar e Komandave OpenZFS' : 'Integrated OpenZFS Command Console'}
               </h2>
             </div>
           </div>
@@ -85,13 +88,13 @@ export const TerminalView: React.FC<Props> = ({ onExecute }) => {
             className="text-xs text-slate-400 hover:text-slate-200 flex items-center gap-1 cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
-            Pastro Historikun
+            {sq ? 'Pastro Historikun' : 'Clear History'}
           </button>
         </div>
 
         {/* Quick Buttons */}
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-xs text-slate-400 font-mono">Komanda te Shpejta:</span>
+          <span className="text-xs text-slate-400 font-mono">{sq ? 'Komanda te Shpejta:' : 'Quick Commands:'}</span>
           {quickCommands.map((q) => (
             <button
               key={q.cmd}
@@ -123,7 +126,7 @@ export const TerminalView: React.FC<Props> = ({ onExecute }) => {
               value={inputCmd}
               onChange={(e) => setInputCmd(e.target.value)}
               className="w-full bg-[#050914] border border-slate-700 rounded-lg pl-36 pr-4 py-2.5 text-xs text-white font-mono focus:border-emerald-500 focus:outline-none"
-              placeholder="shkruaj komanden ZFS psh: zpool status, arcstat, zfs get all"
+              placeholder={sq ? 'shkruaj komanden ZFS psh: zpool status, arcstat, zfs get all' : 'type a ZFS command, e.g. zpool status, arcstat, zfs get all'}
             />
           </div>
           <button
@@ -132,7 +135,7 @@ export const TerminalView: React.FC<Props> = ({ onExecute }) => {
             className="px-5 py-2.5 text-xs font-bold rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white flex items-center gap-1.5 transition-colors cursor-pointer disabled:opacity-50"
           >
             <Play className="w-3.5 h-3.5" />
-            {loading ? 'Duke Ekzekutuar...' : 'Ekzekuto'}
+            {loading ? (sq ? 'Duke Ekzekutuar...' : 'Running...') : (sq ? 'Ekzekuto' : 'Run')}
           </button>
         </form>
       </div>
@@ -154,10 +157,10 @@ export const TerminalView: React.FC<Props> = ({ onExecute }) => {
               <button
                 onClick={() => handleCopy(item.out, idx)}
                 className="text-slate-400 hover:text-white flex items-center gap-1 cursor-pointer"
-                title="Kopjo output-in"
+                title={sq ? 'Kopjo output-in' : 'Copy output'}
               >
                 {copiedIdx === idx ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                <span>{copiedIdx === idx ? 'Kopjuar' : 'Kopjo'}</span>
+                <span>{copiedIdx === idx ? (sq ? 'Kopjuar' : 'Copied') : (sq ? 'Kopjo' : 'Copy')}</span>
               </button>
             </div>
 

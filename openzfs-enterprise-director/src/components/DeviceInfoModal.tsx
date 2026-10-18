@@ -187,7 +187,7 @@ export const DeviceInfoModal: React.FC<Props> = ({ deviceInfo, onClose, lang }) 
   > = {
     reallocated: {
       title: lang === 'sq' ? 'Sektorë të Realokuar (S.M.A.R.T. 05)' : 'Reallocated Sectors (S.M.A.R.T. 05)',
-      unit: 'sekt.',
+      unit: lang === 'sq' ? 'sekt.' : 'sect.',
       getValue: (pt) => pt.reallocatedSectors,
       strokeColor: deltaReallocated > 0 ? '#f43f5e' : '#10b981',
       fillColor: deltaReallocated > 0 ? 'rgba(244, 63, 94, 0.15)' : 'rgba(16, 185, 129, 0.15)',
@@ -209,7 +209,7 @@ export const DeviceInfoModal: React.FC<Props> = ({ deviceInfo, onClose, lang }) 
     },
     pending: {
       title: lang === 'sq' ? 'Sektorë në Pritje (Current Pending S.M.A.R.T. 197)' : 'Pending Sectors (Current Pending S.M.A.R.T. 197)',
-      unit: 'sekt.',
+      unit: lang === 'sq' ? 'sekt.' : 'sect.',
       getValue: (pt) => pt.pendingSectors,
       strokeColor: '#e11d48',
       fillColor: 'rgba(225, 29, 72, 0.15)',
@@ -298,7 +298,7 @@ export const DeviceInfoModal: React.FC<Props> = ({ deviceInfo, onClose, lang }) 
                 </span>
                 {isAccelerating && (
                   <span className="text-[10px] font-mono text-rose-300 bg-rose-900/60 px-2 py-0.5 rounded border border-rose-700">
-                    Velocity: +{deltaReallocated} sekt.
+                    Velocity: +{deltaReallocated} {lang === 'sq' ? 'sekt.' : 'sect.'}
                   </span>
                 )}
               </div>
@@ -313,7 +313,7 @@ export const DeviceInfoModal: React.FC<Props> = ({ deviceInfo, onClose, lang }) 
           <button
             onClick={onClose}
             className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
-            aria-label="Mbyll"
+            aria-label={lang === 'sq' ? 'Mbyll' : 'Close'}
           >
             <X className="w-5 h-5" />
           </button>
@@ -696,7 +696,7 @@ export const DeviceInfoModal: React.FC<Props> = ({ deviceInfo, onClose, lang }) 
             className="flex items-center gap-1.5 text-xs text-slate-400 hover:text-white cursor-pointer"
           >
             {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-            <span>{copied ? t('common.copied') : 'Kopjo SMART JSON'}</span>
+            <span>{copied ? t('common.copied') : (lang === 'sq' ? 'Kopjo SMART JSON' : 'Copy SMART JSON')}</span>
           </button>
           <button
             onClick={onClose}

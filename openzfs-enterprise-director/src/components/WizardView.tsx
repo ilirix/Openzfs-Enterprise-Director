@@ -33,7 +33,7 @@ interface Props {
   lang?: Language;
 }
 
-export const WizardView: React.FC<Props> = ({ availableDisks, existingPools, onComplete, lang = 'sq' }) => {
+export const WizardView: React.FC<Props> = ({ availableDisks, existingPools, onComplete, lang = 'en' }) => {
   const t = (k: string) => TRANSLATIONS[lang]?.[k] || k;
   const [step, setStep] = useState(1);
 

@@ -100,7 +100,7 @@ const CHROME = {
   },
 };
 
-export const InfoBoxModal: React.FC<Props> = ({ topic, onClose, lang = 'sq' }) => {
+export const InfoBoxModal: React.FC<Props> = ({ topic, onClose, lang = 'en' }) => {
   const [copiedCmd, setCopiedCmd] = React.useState<string | null>(null);
   const ui = CHROME[lang] || CHROME.en;
   const shown = resolveInfoTopic(lang, topic);

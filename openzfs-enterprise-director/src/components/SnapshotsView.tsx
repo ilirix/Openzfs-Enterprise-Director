@@ -39,7 +39,7 @@ export const SnapshotsView: React.FC<Props> = ({
   onCreateSnapshot,
   onRollback,
   onDestroySnapshot,
-  lang = 'sq',
+  lang = 'en',
   onOpenZSend,
   onRequestDangerConfirm,
 }) => {
@@ -76,7 +76,7 @@ export const SnapshotsView: React.FC<Props> = ({
           <div>
             <div className="text-xs text-slate-400 font-mono">Copy-on-Write (CoW) Point-in-Time</div>
             <h2 className="text-sm font-bold text-white">
-              Menaxhimi i Snapshot-eve, Klonimeve & Replikimit Inkremental
+              {lang === 'sq' ? 'Menaxhimi i Snapshot-eve, Klonimeve & Replikimit Inkremental' : 'Snapshots, Clones & Incremental Replication'}
             </h2>
           </div>
         </div>
@@ -88,7 +88,7 @@ export const SnapshotsView: React.FC<Props> = ({
             onChange={(e) => setFilterDataset(e.target.value)}
             className="bg-slate-900 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-white font-mono focus:border-amber-500 focus:outline-none cursor-pointer"
           >
-            <option value="all">Te gjithe Datasets ({snapshots.length})</option>
+            <option value="all">{lang === 'sq' ? 'Te gjithe Datasets (' : 'All datasets ('}{snapshots.length})</option>
             {datasets.map((d) => (
               <option key={d.name} value={d.name}>
                 {d.name}
@@ -158,7 +158,7 @@ export const SnapshotsView: React.FC<Props> = ({
                             onOpenZSend(pool, ds, s.name);
                           }}
                           className="px-2 py-1 text-[10px] rounded bg-indigo-950/60 hover:bg-indigo-900/60 border border-indigo-800/40 text-indigo-300 flex items-center gap-1 cursor-pointer font-mono"
-                          title="Migro kete snapshot me ZFS Z-Send"
+                          title={lang === 'sq' ? 'Migro kete snapshot me ZFS Z-Send' : 'Migrate this snapshot with ZFS Z-Send'}
                         >
                           <Send className="w-3 h-3 text-indigo-400" />
                           Z-Send
@@ -181,7 +181,7 @@ export const SnapshotsView: React.FC<Props> = ({
                           }
                         }}
                         className="px-2 py-1 text-[10px] rounded bg-amber-950/60 hover:bg-amber-900/60 border border-amber-800/40 text-amber-300 flex items-center gap-1 cursor-pointer"
-                        title="Kthe dataset-in mbrapsht ne kete moment"
+                        title={lang === 'sq' ? 'Kthe dataset-in mbrapsht ne kete moment' : 'Roll the dataset back to this point'}
                       >
                         <RotateCcw className="w-3 h-3" />
                         Rollback
@@ -193,7 +193,7 @@ export const SnapshotsView: React.FC<Props> = ({
                             onRequestDangerConfirm({
                               type: 'delete_dataset',
                               targetName: s.name,
-                              details: `Snapshot madhesia: ${s.used} · Refer: ${s.refer}`,
+                              details: (lang === 'sq' ? `Snapshot madhesia: ${s.used} · Refer: ${s.refer}` : `Snapshot size: ${s.used} · Refer: ${s.refer}`),
                               onConfirm: () => onDestroySnapshot(s.name),
                             });
                           } else {
@@ -201,7 +201,7 @@ export const SnapshotsView: React.FC<Props> = ({
                           }
                         }}
                         className="p-1 text-slate-500 hover:text-rose-400 rounded transition-colors cursor-pointer"
-                        title="Fshi snapshot (zfs destroy)"
+                        title={lang === 'sq' ? 'Fshi snapshot (zfs destroy)' : 'Destroy snapshot (zfs destroy)'}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
                       </button>
@@ -219,10 +219,10 @@ export const SnapshotsView: React.FC<Props> = ({
         <div className="p-5 rounded-xl bg-[#0b1224] border border-slate-800/80 space-y-3">
           <h3 className="text-sm font-semibold text-white flex items-center gap-2">
             <Share2 className="w-4 h-4 text-sky-400" />
-            Replikimi Inkremental (zfs send / zfs recv)
+            {lang === 'sq' ? 'Replikimi Inkremental (zfs send / zfs recv)' : 'Incremental Replication (zfs send / zfs recv)'}
           </h3>
           <p className="text-xs text-slate-300 leading-relaxed">
-            ZFS mund te transmetoje vetem diferencat binare mes dy snapshot-eve permes SSH ose rrjetit pa skanuar skedaret:
+            {lang === 'sq' ? 'ZFS mund te transmetoje vetem diferencat binare mes dy snapshot-eve permes SSH ose rrjetit pa skanuar skedaret:' : 'ZFS can stream only the block differences between two snapshots over SSH or the network, without scanning files:'}
           </p>
           <div className="p-3 rounded-lg bg-[#050914] border border-slate-800 font-mono text-xs text-emerald-400 overflow-x-auto relative">
             <span>{replicationExample}</span>
@@ -251,23 +251,23 @@ export const SnapshotsView: React.FC<Props> = ({
         <div className="p-5 rounded-xl bg-[#0b1224] border border-slate-800/80 space-y-3">
           <h3 className="text-sm font-semibold text-white flex items-center gap-2">
             <Clock className="w-4 h-4 text-emerald-400" />
-            Automatizimi i Politikave (Snapshot Schedule)
+            {lang === 'sq' ? 'Automatizimi i Politikave (Snapshot Schedule)' : 'Policy Automation (Snapshot Schedule)'}
           </h3>
           <p className="text-xs text-slate-300 leading-relaxed">
-            Rekomandimi enterprise eshte perdorimi i skripteve si <code>sanoid</code> ose <code>pyznap</code>:
+            {lang === 'sq' ? 'Rekomandimi enterprise eshte perdorimi i skripteve si' : 'For production, use a policy tool such as'} <code>sanoid</code> {lang === 'sq' ? 'ose' : 'or'} <code>pyznap</code>:
           </p>
           <div className="space-y-1.5 text-xs font-mono text-slate-300">
             <div className="p-2 rounded bg-[#070d1c] border border-slate-800 flex justify-between">
               <span>Hourly Snapshots:</span>
-              <span className="text-emerald-400">Ruaj 24 (Cdo ore)</span>
+              <span className="text-emerald-400">{lang === 'sq' ? 'Ruaj 24 (Cdo ore)' : 'Keep 24 (hourly)'}</span>
             </div>
             <div className="p-2 rounded bg-[#070d1c] border border-slate-800 flex justify-between">
               <span>Daily Snapshots:</span>
-              <span className="text-emerald-400">Ruaj 7 (Cdo dite ne 00:00)</span>
+              <span className="text-emerald-400">{lang === 'sq' ? 'Ruaj 7 (Cdo dite ne 00:00)' : 'Keep 7 (daily at 00:00)'}</span>
             </div>
             <div className="p-2 rounded bg-[#070d1c] border border-slate-800 flex justify-between">
               <span>Monthly Snapshots:</span>
-              <span className="text-emerald-400">Ruaj 12 (Cdo muaj)</span>
+              <span className="text-emerald-400">{lang === 'sq' ? 'Ruaj 12 (Cdo muaj)' : 'Keep 12 (monthly)'}</span>
             </div>
           </div>
         </div>

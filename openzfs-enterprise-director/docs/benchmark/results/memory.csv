@@ -1,0 +1,7 @@
+server,phase,rss_kb,hwm_kb
+node,idle,64464,64464
+node,after-get-load,102140,102140
+node,after-post-load,107448,108508
+rust,idle,3684,3684
+rust,after-get-load,13180,13180
+rust,after-post-load,13052,13180

@@ -219,7 +219,7 @@ export const PoolsView: React.FC<Props> = ({
               setShowBackupModal(true);
             }}
             className="px-3 py-1.5 text-xs font-medium text-emerald-300 bg-emerald-950/70 hover:bg-emerald-900/70 border border-emerald-700/50 rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer"
-            title="Eksporto ose Importo konfigurimet ZFS (Disaster Recovery & Environment Cloning)"
+            title={lang === 'sq' ? 'Eksporto ose Importo konfigurimet ZFS (Disaster Recovery & Environment Cloning)' : 'Export or import ZFS configurations (disaster recovery & environment cloning)'}
           >
             <FileJson className="w-3.5 h-3.5 text-emerald-400" />
             <span>{lang === 'sq' ? 'Eksporto / Importo JSON (DR)' : 'Export / Import JSON (DR)'}</span>
@@ -228,7 +228,7 @@ export const PoolsView: React.FC<Props> = ({
             <button
               onClick={() => onOpenZSend(currentPool?.name)}
               className="px-3 py-1.5 text-xs font-semibold text-indigo-300 bg-indigo-950/70 hover:bg-indigo-900/70 border border-indigo-700/50 rounded-lg flex items-center gap-1.5 transition-colors cursor-pointer font-mono"
-              title="Migro të dhënat me ZFS Z-Send"
+              title={lang === 'sq' ? 'Migro të dhënat me ZFS Z-Send' : 'Migrate data with ZFS Z-Send'}
             >
               <Send className="w-3.5 h-3.5 text-indigo-400" />
               <span>{lang === 'sq' ? 'Migro me Z-Send' : 'Z-Send Migration'}</span>
@@ -312,7 +312,7 @@ export const PoolsView: React.FC<Props> = ({
                 <button
                   onClick={() => onTrim(currentPool.name)}
                   className="p-2.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                  title="Ekzekuto ZFS TRIM per rikuperim blloqesh SSD/NVMe"
+                  title={lang === 'sq' ? 'Ekzekuto ZFS TRIM per rikuperim blloqesh SSD/NVMe' : 'Run ZFS TRIM to reclaim SSD/NVMe blocks'}
                 >
                   <Sparkles className="w-3.5 h-3.5 text-sky-400" />
                   <span>ZFS TRIM</span>
@@ -323,7 +323,7 @@ export const PoolsView: React.FC<Props> = ({
               <button
                 onClick={() => setShowScrubScheduler(true)}
                 className="w-full p-2.5 rounded-lg bg-indigo-950/60 hover:bg-indigo-900/60 border border-indigo-800/50 text-indigo-300 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                title="Planifiko oraret e perseritura te scrub me Cron dhe dritare kalendarike"
+                title={lang === 'sq' ? 'Planifiko oraret e perseritura te scrub me Cron dhe dritare kalendarike' : 'Plan recurring scrubs with cron and calendar windows'}
               >
                 <Calendar className="w-3.5 h-3.5 text-indigo-400" />
                 <span>{lang === 'sq' ? 'Orari i Scrubbing (Cron & Kalendar)' : 'Scrub Scheduler (Cron & Calendar)'}</span>
@@ -336,7 +336,7 @@ export const PoolsView: React.FC<Props> = ({
                   setShowBackupModal(true);
                 }}
                 className="w-full p-2.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900/60 border border-emerald-800/50 text-emerald-300 text-xs font-medium flex items-center justify-center gap-1.5 transition-colors cursor-pointer"
-                title="Eksporto konfigurimin dhe metadhenat e ketij pool-i per rikuperim emergjence (Disaster Recovery)"
+                title={lang === 'sq' ? 'Eksporto konfigurimin dhe metadhenat e ketij pool-i per rikuperim emergjence (Disaster Recovery)' : 'Export this pool\'s configuration and metadata for disaster recovery'}
               >
                 <FileJson className="w-3.5 h-3.5 text-emerald-400" />
                 <span>{lang === 'sq' ? 'Eksporto Konfigurimin (JSON / DR)' : 'Export Configuration (JSON / DR)'}</span>
@@ -350,7 +350,9 @@ export const PoolsView: React.FC<Props> = ({
                       onRequestDangerConfirm({
                         type: 'delete_pool',
                         targetName: currentPool.name,
-                        details: `Kapaciteti: ${currentPool.size} · E lire: ${currentPool.free} · Ashift: ${currentPool.ashift} · Disqet: ${currentPool.vdevs.map(v => v.disks.join(', ')).join('; ')}`,
+                        details: lang === 'sq'
+                          ? `Kapaciteti: ${currentPool.size} · E lire: ${currentPool.free} · Ashift: ${currentPool.ashift} · Disqet: ${currentPool.vdevs.map(v => v.disks.join(', ')).join('; ')}`
+                          : `Capacity: ${currentPool.size} · Free: ${currentPool.free} · Ashift: ${currentPool.ashift} · Disks: ${currentPool.vdevs.map(v => v.disks.join(', ')).join('; ')}`,
                         onConfirm: () => onDestroyPool(currentPool.name),
                       });
                     } else {
@@ -434,7 +436,7 @@ export const PoolsView: React.FC<Props> = ({
                             <button
                               onClick={() => onInspectDevice(d)}
                               className="px-1.5 py-0.5 rounded text-[10px] bg-sky-950/80 hover:bg-sky-900 text-sky-400 border border-sky-800/40 cursor-pointer flex items-center gap-0.5 transition-colors"
-                              title={`Shiko informacionin SMART per ${d}`}
+                              title={(lang === 'sq' ? `Shiko informacionin SMART per ${d}` : `View SMART information for ${d}`)}
                             >
                               <Info className="w-2.5 h-2.5" />
                               <span>Info</span>
@@ -502,8 +504,8 @@ export const PoolsView: React.FC<Props> = ({
               >
                 <option value="cache">cache (L2ARC Secondary Read Cache)</option>
                 <option value="log">log (SLOG Separate Intent Log - ZIL)</option>
-                <option value="special">special (Special VDEV per Metadata & Small Blocks)</option>
-                <option value="spare">spare (Hot Spare per zevendesim automatik)</option>
+                <option value="special">{lang === 'sq' ? 'special (Special VDEV per Metadata & Small Blocks)' : 'special (Special VDEV for metadata & small blocks)'}</option>
+                <option value="spare">{lang === 'sq' ? 'spare (Hot Spare per zevendesim automatik)' : 'spare (Hot spare for automatic replacement)'}</option>
               </select>
             </div>
 

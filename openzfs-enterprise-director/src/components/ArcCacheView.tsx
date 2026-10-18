@@ -36,7 +36,7 @@ interface Props {
   lang?: Language;
 }
 
-export const ArcCacheView: React.FC<Props> = ({ arc, onTuneArc, onPersistConf, lang = 'sq' }) => {
+export const ArcCacheView: React.FC<Props> = ({ arc, onTuneArc, onPersistConf, lang = 'en' }) => {
   const t = (key: string) => TRANSLATIONS[lang]?.[key] || key;
 
   // Convert bytes to GB for easy slider manipulation
@@ -100,7 +100,7 @@ export const ArcCacheView: React.FC<Props> = ({ arc, onTuneArc, onPersistConf, l
   };
 
   const modprobeConf = `# OpenZFS Enterprise Director - Persistent Kernel Tunables
-# Vendoset ne /etc/modprobe.d/zfs.conf
+${lang === 'sq' ? '# Vendoset ne /etc/modprobe.d/zfs.conf' : '# Save as /etc/modprobe.d/zfs.conf'}
 options zfs zfs_arc_max=${arcMaxGb * 1024 * 1024 * 1024}
 options zfs zfs_arc_min=${arcMinGb * 1024 * 1024 * 1024}
 options zfs l2arc_write_max=${l2WriteMb * 1024 * 1024}
@@ -150,8 +150,8 @@ options zfs l2arc_noprefetch=${l2Prefetch}
       color: 'from-amber-500/20 to-orange-500/10 border-amber-500/30 text-amber-400',
       tag: 'OLTP & SQL',
       specialVdev: {
-        topology: '2-way ose 3-way Mirror (Enterprise PLP NVMe)',
-        blocks: 'special_small_blocks=16K ose 32K',
+        topology: (lang === 'sq' ? '2-way ose 3-way Mirror (Enterprise PLP NVMe)' : '2-way or 3-way mirror (enterprise PLP NVMe)'),
+        blocks: (lang === 'sq' ? 'special_small_blocks=16K ose 32K' : 'special_small_blocks=16K or 32K'),
         reason:
           lang === 'sq'
             ? 'Te gjitha indekset B-Tree dhe faqet e bazave te te dhenave (PostgreSQL 8K, MySQL 16K) zhvendosen automatikisht ne NVMe flash te dedikuar. Disqet HDD kryesore clirohen teresisht nga kerkimet e rastesishme.'
@@ -191,15 +191,15 @@ options zfs l2arc_noprefetch=${l2Prefetch}
       color: 'from-sky-500/20 to-indigo-500/10 border-sky-500/30 text-sky-400',
       tag: 'Hypervisors & ZVOL',
       specialVdev: {
-        topology: 'Mirror (2-way ose 3-way) me DWPD >= 3 NVMe',
-        blocks: 'special_small_blocks=8K ose 16K (volblocksize=8K)',
+        topology: (lang === 'sq' ? 'Mirror (2-way ose 3-way) me DWPD >= 3 NVMe' : 'Mirror (2-way or 3-way), NVMe with DWPD >= 3'),
+        blocks: (lang === 'sq' ? 'special_small_blocks=8K ose 16K (volblocksize=8K)' : 'special_small_blocks=8K or 16K (volblocksize=8K)'),
         reason:
           lang === 'sq'
             ? 'ZVOL-et e makinave virtuale Proxmox/VMware dhe metadhenat e disqeve qcow2 ruhen drejtperdrejt ne NVMe, duke rritur IOPS me mbi 500% gjate Boot Storms.'
             : 'Virtual machine disk headers and 8KB ZVOL payload blocks are stored on NVMe, speeding VM boot and disk clones by >500%.',
       },
       slog: {
-        topology: 'Mirror (2-way) me DWPD >= 3 NVMe me PLP',
+        topology: (lang === 'sq' ? 'Mirror (2-way) me DWPD >= 3 NVMe me PLP' : 'Mirror (2-way), NVMe with DWPD >= 3 and PLP'),
         sizing: '32GB - 64GB',
         reason:
           lang === 'sq'
@@ -232,15 +232,15 @@ options zfs l2arc_noprefetch=${l2Prefetch}
       color: 'from-emerald-500/20 to-teal-500/10 border-emerald-500/30 text-emerald-400',
       tag: 'NFS / SMB / 4K Video',
       specialVdev: {
-        topology: 'Mirror NVMe (Kosto-efektive, p.sh. 2x 480GB)',
-        blocks: 'special_small_blocks=0 ose 4K (VETEM METADATA)',
+        topology: (lang === 'sq' ? 'Mirror NVMe (Kosto-efektive, p.sh. 2x 480GB)' : 'Mirror NVMe (cost-effective, e.g. 2x 480GB)'),
+        blocks: (lang === 'sq' ? 'special_small_blocks=0 ose 4K (VETEM METADATA)' : 'special_small_blocks=0 or 4K (METADATA ONLY)'),
         reason:
           lang === 'sq'
             ? 'Duke vendosur special_small_blocks=0, Special VDEV mban VETEM metadhenat e skedareve (dnodes & directory trees). Lundrimi ne miliona skedare behet i menjehershem pa shpenzuar flash per video gigabajte.'
             : 'With special_small_blocks=0, the Special VDEV holds ONLY file metadata (dnodes & trees). Searching through millions of files is instantaneous without consuming flash for large multi-GB media files.',
       },
       slog: {
-        topology: 'Opsional (vetem per NFS sync shares)',
+        topology: (lang === 'sq' ? 'Opsional (vetem per NFS sync shares)' : 'Optional (only for NFS sync shares)'),
         sizing: '16GB - 32GB',
         reason:
           lang === 'sq'
@@ -281,7 +281,7 @@ options zfs l2arc_noprefetch=${l2Prefetch}
             : 'Routes metadata and all files under 4KB to NVMe, providing an optimal balance between flash capacity usage and random latency reduction.',
       },
       slog: {
-        topology: 'Mirror (2-way) me PLP NVMe',
+        topology: (lang === 'sq' ? 'Mirror (2-way) me PLP NVMe' : 'Mirror (2-way), PLP NVMe'),
         sizing: '32GB Flash',
         reason:
           lang === 'sq'
@@ -350,7 +350,7 @@ options zfs l2arc_noprefetch=${l2Prefetch}
           <span className="text-xs text-slate-400 block font-mono">{t('arc.activeRam')}</span>
           <div className="text-xl font-bold font-mono text-white mt-1">{arcSizeGb} GiB</div>
           <span className="text-[11px] text-slate-500 font-mono">
-            Tavan c_max: {arcMaxValGb} GiB
+            {lang === 'sq' ? 'Tavan' : 'Ceiling'} c_max: {arcMaxValGb} GiB
           </span>
         </div>
 
@@ -470,14 +470,14 @@ options zfs l2arc_noprefetch=${l2Prefetch}
 
                   <div className="space-y-2 text-xs">
                     <div>
-                      <span className="text-slate-400 block text-[11px]">Topologjia e Kerkuar:</span>
+                      <span className="text-slate-400 block text-[11px]">{lang === 'sq' ? 'Topologjia e Kerkuar:' : 'Required topology:'}</span>
                       <strong className="text-white font-mono text-xs block mt-0.5">
                         {current.specialVdev.topology}
                       </strong>
                     </div>
 
                     <div>
-                      <span className="text-slate-400 block text-[11px]">Parametri ZFS i Madhesise:</span>
+                      <span className="text-slate-400 block text-[11px]">{lang === 'sq' ? 'Parametri ZFS i Madhesise:' : 'ZFS size parameter:'}</span>
                       <code className="text-purple-300 bg-purple-950/80 px-2 py-0.5 rounded font-mono text-[11px] block mt-0.5 border border-purple-800/40 truncate">
                         {current.specialVdev.blocks}
                       </code>
@@ -503,14 +503,14 @@ options zfs l2arc_noprefetch=${l2Prefetch}
 
                   <div className="space-y-2 text-xs">
                     <div>
-                      <span className="text-slate-400 block text-[11px]">Madhesia e Sugjeruar:</span>
+                      <span className="text-slate-400 block text-[11px]">{lang === 'sq' ? 'Madhesia e Sugjeruar:' : 'Suggested size:'}</span>
                       <strong className="text-white font-mono text-xs block mt-0.5">
                         {current.arc.sizing}
                       </strong>
                     </div>
 
                     <div>
-                      <span className="text-slate-400 block text-[11px]">Vlerat Optimale te Kernelit:</span>
+                      <span className="text-slate-400 block text-[11px]">{lang === 'sq' ? 'Vlerat Optimale te Kernelit:' : 'Optimal kernel values:'}</span>
                       <code className="text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded font-mono text-[11px] block mt-0.5 border border-emerald-800/40 truncate">
                         {current.arc.tuning}
                       </code>
@@ -536,14 +536,14 @@ options zfs l2arc_noprefetch=${l2Prefetch}
 
                   <div className="space-y-2 text-xs">
                     <div>
-                      <span className="text-slate-400 block text-[11px]">Topologjia e Sugjeruar:</span>
+                      <span className="text-slate-400 block text-[11px]">{lang === 'sq' ? 'Topologjia e Sugjeruar:' : 'Suggested topology:'}</span>
                       <strong className="text-white font-mono text-xs block mt-0.5">
                         {current.slog.topology}
                       </strong>
                     </div>
 
                     <div>
-                      <span className="text-slate-400 block text-[11px]">Madhesia e Nevojshme:</span>
+                      <span className="text-slate-400 block text-[11px]">{lang === 'sq' ? 'Madhesia e Nevojshme:' : 'Required size:'}</span>
                       <code className="text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded font-mono text-[11px] block mt-0.5 border border-amber-800/40 truncate">
                         {current.slog.sizing}
                       </code>
@@ -569,14 +569,14 @@ options zfs l2arc_noprefetch=${l2Prefetch}
 
                   <div className="space-y-2 text-xs">
                     <div>
-                      <span className="text-slate-400 block text-[11px]">Raporti i Madhesise:</span>
+                      <span className="text-slate-400 block text-[11px]">{lang === 'sq' ? 'Raporti i Madhesise:' : 'Size ratio:'}</span>
                       <strong className="text-white font-mono text-xs block mt-0.5">
                         {current.cache.sizing}
                       </strong>
                     </div>
 
                     <div>
-                      <span className="text-slate-400 block text-[11px]">Shkrimi & Prefetch:</span>
+                      <span className="text-slate-400 block text-[11px]">{lang === 'sq' ? 'Shkrimi & Prefetch:' : 'Writes & prefetch:'}</span>
                       <code className="text-sky-300 bg-sky-950/80 px-2 py-0.5 rounded font-mono text-[11px] block mt-0.5 border border-sky-800/40 truncate">
                         {current.cache.tuning}
                       </code>
@@ -617,7 +617,7 @@ options zfs l2arc_noprefetch=${l2Prefetch}
           <div className="flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-emerald-400" />
             <h3 className="text-sm font-semibold text-white">
-              Shperndarja Dinamike e Algoritmit: MFU vs MRU
+              {lang === 'sq' ? 'Shperndarja Dinamike e Algoritmit: MFU vs MRU' : 'Adaptive Algorithm Split: MFU vs MRU'}
             </h3>
           </div>
           <span className="text-xs text-slate-400 font-mono">
@@ -679,7 +679,7 @@ options zfs l2arc_noprefetch=${l2Prefetch}
           <div className="flex items-center justify-between pb-3 border-b border-slate-800/80">
             <h3 className="text-sm font-semibold text-white flex items-center gap-2">
               <Sliders className="w-4 h-4 text-sky-400" />
-              Rregullimi i Parametrave ne Kohe Reale (Live Kernel Tuner)
+              {lang === 'sq' ? 'Rregullimi i Parametrave ne Kohe Reale (Live Kernel Tuner)' : 'Real-Time Parameter Tuning (Live Kernel Tuner)'}
             </h3>
           </div>
 
@@ -687,7 +687,7 @@ options zfs l2arc_noprefetch=${l2Prefetch}
             {/* ARC Max Slider */}
             <div className="space-y-1.5">
               <div className="flex justify-between font-mono">
-                <span className="text-slate-300 font-medium">Kufiri Maksimal ARC (zfs_arc_max):</span>
+                <span className="text-slate-300 font-medium">{lang === 'sq' ? 'Kufiri Maksimal ARC (zfs_arc_max):' : 'ARC maximum (zfs_arc_max):'}</span>
                 <span className="text-sky-400 font-bold">{arcMaxGb} GiB</span>
               </div>
               <input
@@ -700,14 +700,14 @@ options zfs l2arc_noprefetch=${l2Prefetch}
                 className="w-full accent-sky-500 cursor-pointer"
               />
               <span className="text-[10px] text-slate-500 block">
-                Rekomandohet 50% deri 75% e memories fizike RAM te serverit Linux.
+                {lang === 'sq' ? 'Rekomandohet 50% deri 75% e memories fizike RAM te serverit Linux.' : '50% to 75% of the Linux host\'s physical RAM is recommended.'}
               </span>
             </div>
 
             {/* ARC Min Slider */}
             <div className="space-y-1.5">
               <div className="flex justify-between font-mono">
-                <span className="text-slate-300 font-medium">Dyshemeja Minimale ARC (zfs_arc_min):</span>
+                <span className="text-slate-300 font-medium">{lang === 'sq' ? 'Dyshemeja Minimale ARC (zfs_arc_min):' : 'ARC minimum (zfs_arc_min):'}</span>
                 <span className="text-emerald-400 font-bold">{arcMinGb} GiB</span>
               </div>
               <input
@@ -720,7 +720,7 @@ options zfs l2arc_noprefetch=${l2Prefetch}
                 className="w-full accent-emerald-500 cursor-pointer"
               />
               <span className="text-[10px] text-slate-500 block">
-                Kufiri nen te cilin ZFS nuk do ta tkurre kujtesen pavaresisht kerkesave te tjera.
+                {lang === 'sq' ? 'Kufiri nen te cilin ZFS nuk do ta tkurre kujtesen pavaresisht kerkesave te tjera.' : 'ZFS will not shrink the ARC below this value, regardless of other memory pressure.'}
               </span>
             </div>
 

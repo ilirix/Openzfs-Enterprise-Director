@@ -45,7 +45,7 @@ interface Props {
 
 export const DriveHealthSummaryWidget: React.FC<Props> = ({
   onInspectDevice,
-  lang = 'sq',
+  lang = 'en',
 }) => {
   const t = (key: string) => TRANSLATIONS[lang]?.[key] || key;
   const { settings } = useAppSettings();
@@ -299,7 +299,7 @@ export const DriveHealthSummaryWidget: React.FC<Props> = ({
             <button
               onClick={requestDesktopPermission}
               className="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-amber-950/80 hover:bg-amber-900 border border-amber-700/60 text-xs font-mono text-amber-200 transition cursor-pointer"
-              title="Kërko leje në shfletues për njoftime në desktop kur zbulohet përshpejtim i degradimit"
+              title={lang === 'sq' ? 'Kërko leje në shfletues për njoftime në desktop kur zbulohet përshpejtim i degradimit' : 'Ask the browser for desktop notification permission for degradation alerts'}
             >
               <Bell className="w-3.5 h-3.5 text-amber-400" />
               <span>{t('smartTrends.notificationsPrompt')}</span>
@@ -314,7 +314,7 @@ export const DriveHealthSummaryWidget: React.FC<Props> = ({
                 ? 'bg-emerald-900 text-emerald-200 border-emerald-700'
                 : 'bg-slate-900 hover:bg-slate-800 text-slate-300 border-slate-700'
             }`}
-            title="Dërgo një njoftim provë në desktop për të verifikuar sistemin e alarmit SMART"
+            title={lang === 'sq' ? 'Dërgo një njoftim provë në desktop për të verifikuar sistemin e alarmit SMART' : 'Send a test desktop notification to verify SMART alerts'}
           >
             {notificationTestSent ? (
               <>
@@ -333,7 +333,7 @@ export const DriveHealthSummaryWidget: React.FC<Props> = ({
           <button
             onClick={pollSmartHealthAndTrends}
             className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-400 hover:text-white border border-slate-800 text-xs transition cursor-pointer flex items-center gap-1"
-            title="Rifresko menjëherë vlerat SMART dhe trendet historike"
+            title={lang === 'sq' ? 'Rifresko menjëherë vlerat SMART dhe trendet historike' : 'Refresh SMART values and historical trends now'}
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
             <span className="text-[10px] font-mono hidden md:inline">{lastRefreshed}</span>
@@ -402,12 +402,12 @@ export const DriveHealthSummaryWidget: React.FC<Props> = ({
                     {t('smartTrends.accelerationAlertTitle')}
                   </span>
                   <span className="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-900 text-rose-200 border border-rose-600">
-                    {acceleratingTrend.accelerationFactor}x PËRSHPEJTIM
+                    {acceleratingTrend.accelerationFactor}{lang === 'sq' ? 'x PËRSHPEJTIM' : 'x ACCELERATION'}
                   </span>
                 </div>
                 <p className="text-slate-300 text-xs mt-1 leading-relaxed">
                   {acceleratingTrend.accelerationReason ||
-                    `Përshpejtim i lartë i sektorëve të realokuar (${acceleratingTrend.currentReallocated}) dhe ${acceleratingTrend.currentPending} sektorë në pritje në ${acceleratingTrend.dev}.`}
+                    (lang === 'sq' ? `Përshpejtim i lartë i sektorëve të realokuar (${acceleratingTrend.currentReallocated}) dhe ${acceleratingTrend.currentPending} sektorë në pritje në ${acceleratingTrend.dev}.` : `High growth of reallocated sectors (${acceleratingTrend.currentReallocated}) and ${acceleratingTrend.currentPending} pending sectors on ${acceleratingTrend.dev}.`)}
                 </p>
               </div>
             </div>
@@ -480,22 +480,22 @@ export const DriveHealthSummaryWidget: React.FC<Props> = ({
         </div>
 
         <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-          <span className="text-slate-400 block text-[10px] uppercase">Disqe me Përshpejtim</span>
+          <span className="text-slate-400 block text-[10px] uppercase">{lang === 'sq' ? 'Disqe me Përshpejtim' : 'Accelerating drives'}</span>
           <div className={`text-lg font-bold mt-0.5 ${acceleratingTrend ? 'text-rose-400' : 'text-slate-300'}`}>
             {acceleratingTrend ? '1 (/dev/sde)' : '0 (None)'}
           </div>
           <span className="text-[10px] text-rose-400 font-sans">
-            {acceleratingTrend ? 'Përshpejtim 8.5x i zbuluar' : 'Normale sipas trendit bazë'}
+            {acceleratingTrend ? (lang === 'sq' ? 'Përshpejtim 8.5x i zbuluar' : '8.5x acceleration detected') : (lang === 'sq' ? 'Normale sipas trendit bazë' : 'Normal against baseline')}
           </span>
         </div>
 
         <div className="p-3 rounded-lg bg-slate-950 border border-slate-800">
-          <span className="text-slate-400 block text-[10px] uppercase">Disqe Afër Pragut Kritik</span>
+          <span className="text-slate-400 block text-[10px] uppercase">{lang === 'sq' ? 'Disqe Afër Pragut Kritik' : 'Drives near critical threshold'}</span>
           <div className={`text-lg font-bold mt-0.5 ${nearingThresholdDrives.length > 0 ? 'text-rose-400' : 'text-slate-400'}`}>
             {nearingThresholdDrives.length}
           </div>
           <span className="text-[10px] text-slate-400 font-sans">
-            {nearingThresholdDrives.length > 0 ? 'Zëvendësim i rekomanduar' : 'Gjendje e shëndetshme'}
+            {nearingThresholdDrives.length > 0 ? (lang === 'sq' ? 'Zëvendësim i rekomanduar' : 'Replacement recommended') : (lang === 'sq' ? 'Gjendje e shëndetshme' : 'Healthy')}
           </span>
         </div>
       </div>
@@ -726,19 +726,19 @@ export const DriveHealthSummaryWidget: React.FC<Props> = ({
             {/* Comparison Metrics */}
             <div className="grid grid-cols-3 gap-2 text-xs font-mono">
               <div className="p-2.5 rounded bg-slate-950 border border-slate-800">
-                <span className="text-[10px] text-slate-500 block">TRENDI BAZË (BASELINE)</span>
-                <span className="text-white font-bold">{selectedTrendDrive.historicalBaselineRate} sec/ditë</span>
-                <span className="text-[10px] text-slate-400 block mt-0.5">Norma historike 30d</span>
+                <span className="text-[10px] text-slate-500 block">{lang === 'sq' ? 'TRENDI BAZË (BASELINE)' : 'BASELINE TREND'}</span>
+                <span className="text-white font-bold">{selectedTrendDrive.historicalBaselineRate}{lang === 'sq' ? ' sec/ditë' : ' sect/day'}</span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">{lang === 'sq' ? 'Norma historike 30d' : '30-day historical rate'}</span>
               </div>
               <div className="p-2.5 rounded bg-slate-950 border border-slate-800">
-                <span className="text-[10px] text-slate-500 block">SHPEJTËSIA AKTUALE</span>
-                <span className="text-rose-400 font-bold">{selectedTrendDrive.recentDegradationRate} sec/ditë</span>
-                <span className="text-[10px] text-slate-400 block mt-0.5">Norma 48h të fundit</span>
+                <span className="text-[10px] text-slate-500 block">{lang === 'sq' ? 'SHPEJTËSIA AKTUALE' : 'CURRENT RATE'}</span>
+                <span className="text-rose-400 font-bold">{selectedTrendDrive.recentDegradationRate}{lang === 'sq' ? ' sec/ditë' : ' sect/day'}</span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">{lang === 'sq' ? 'Norma 48h të fundit' : 'Last 48h rate'}</span>
               </div>
               <div className="p-2.5 rounded bg-slate-950 border border-slate-800">
-                <span className="text-[10px] text-slate-500 block">FAKTORI I RREZIKUT</span>
-                <span className="text-amber-300 font-bold">{selectedTrendDrive.accelerationFactor}x Shpejtësi</span>
-                <span className="text-[10px] text-slate-400 block mt-0.5">Përshpejtimi i llogaritur</span>
+                <span className="text-[10px] text-slate-500 block">{lang === 'sq' ? 'FAKTORI I RREZIKUT' : 'RISK FACTOR'}</span>
+                <span className="text-amber-300 font-bold">{selectedTrendDrive.accelerationFactor}{lang === 'sq' ? 'x Shpejtësi' : 'x rate'}</span>
+                <span className="text-[10px] text-slate-400 block mt-0.5">{lang === 'sq' ? 'Përshpejtimi i llogaritur' : 'Calculated acceleration'}</span>
               </div>
             </div>
 
@@ -751,11 +751,11 @@ export const DriveHealthSummaryWidget: React.FC<Props> = ({
                 <table className="w-full text-left text-xs font-mono">
                   <thead>
                     <tr className="border-b border-slate-800 text-slate-400 text-[10px] uppercase">
-                      <th className="pb-1.5">Koha</th>
-                      <th className="pb-1.5">Sektorë të Realokuar</th>
+                      <th className="pb-1.5">{lang === 'sq' ? 'Koha' : 'Time'}</th>
+                      <th className="pb-1.5">{lang === 'sq' ? 'Sektorë të Realokuar' : 'Reallocated sectors'}</th>
                       <th className="pb-1.5">Pending</th>
-                      <th className="pb-1.5">Shëndeti %</th>
-                      <th className="pb-1.5">Temperatura</th>
+                      <th className="pb-1.5">{lang === 'sq' ? 'Shëndeti %' : 'Health %'}</th>
+                      <th className="pb-1.5">{lang === 'sq' ? 'Temperatura' : 'Temperature'}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">

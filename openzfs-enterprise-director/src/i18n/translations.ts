@@ -17,7 +17,6 @@ export interface LanguageMeta {
 }
 
 export const SUPPORTED_LANGUAGES: LanguageMeta[] = [
-  { code: 'sq', name: 'Albanian', native: 'Shqip', flag: '🇦🇱' },
   { code: 'en', name: 'English', native: 'English', flag: '🇬🇧' },
   { code: 'es', name: 'Spanish', native: 'Español', flag: '🇪🇸' },
   { code: 'zh', name: 'Chinese', native: '简体中文', flag: '🇨🇳' },
@@ -25,6 +24,7 @@ export const SUPPORTED_LANGUAGES: LanguageMeta[] = [
   { code: 'fr', name: 'French', native: 'Français', flag: '🇫🇷' },
   { code: 'de', name: 'German', native: 'Deutsch', flag: '🇩🇪' },
   { code: 'ar', name: 'Arabic', native: 'العربية', flag: '🇸🇦', dir: 'rtl' },
+  { code: 'sq', name: 'Albanian', native: 'Shqip', flag: '🇦🇱' },
 ];
 
 export const TRANSLATIONS: Record<Language, Record<string, string>> = {

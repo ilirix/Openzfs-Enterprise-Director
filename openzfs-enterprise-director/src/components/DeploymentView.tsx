@@ -13,13 +13,16 @@ import {
   FileText,
   ShieldCheck,
 } from 'lucide-react';
+import { Language } from '../types/zfs';
 
 interface Props {
   onServiceControl: (action: 'start' | 'stop' | 'restart') => void;
   serviceRunning: boolean;
+  lang?: Language;
 }
 
-export const DeploymentView: React.FC<Props> = ({ onServiceControl, serviceRunning }) => {
+export const DeploymentView: React.FC<Props> = ({ onServiceControl, serviceRunning, lang = 'en' }) => {
+  const sq = lang === 'sq';
   const [activeCodeTab, setActiveCodeTab] = useState<'script' | 'python' | 'rust' | 'installer' | 'systemd'>(
     'script'
   );
@@ -34,7 +37,7 @@ export const DeploymentView: React.FC<Props> = ({ onServiceControl, serviceRunni
   const codeSnippets = {
     script: `#!/usr/bin/env bash
 # OpenZFS Enterprise Director - Master Control Script
-# Perdorimi: ./zfs-mgr.sh {start|stop|restart|status|cli|wizard}
+# Usage: ./zfs-mgr.sh {start|stop|restart|status|cli|wizard}
 
 BASE_DIR="$(cd "$(dirname "\${BASH_SOURCE[0]}")" && pwd)"
 PID_FILE="/var/run/zfs-enterprise-director.pid"
@@ -42,29 +45,29 @@ PORT=3000
 
 case "$1" in
   start)
-    echo "[*] Duke nisur serverin Web & ZFS Director ne portin 3000..."
+    echo "[*] Starting the web panel and ZFS Director on port 3000..."
     nohup npm run dev > /var/log/zfs-director.log 2>&1 &
     echo $! > "$PID_FILE"
-    echo "[OK] Sherbimi u nis me sukses! PID: $(cat "$PID_FILE")"
+    echo "[OK] Service started. PID: $(cat "$PID_FILE")"
     echo "[OK] Web Console: http://localhost:3000"
     ;;
   stop)
-    echo "[*] Duke ndaluar sherbimin OpenZFS Director..."
+    echo "[*] Stopping OpenZFS Director..."
     if [ -f "$PID_FILE" ]; then
       kill "$(cat "$PID_FILE")" 2>/dev/null || true
       rm -f "$PID_FILE"
     fi
     pkill -f "server.ts" 2>/dev/null || true
-    echo "[OK] Sherbimi u ndalua plotesisht."
+    echo "[OK] Service stopped."
     ;;
   restart)
     $0 stop && sleep 1 && $0 start
     ;;
   status)
     if [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
-      echo "[STATUS: AKTIV] PID: $(cat "$PID_FILE") | Port: $PORT"
+      echo "[STATUS: ACTIVE] PID: $(cat "$PID_FILE") | Port: $PORT"
     else
-      echo "[STATUS: JO AKTIV]"
+      echo "[STATUS: NOT ACTIVE]"
     fi
     ;;
   cli)
@@ -75,7 +78,7 @@ case "$1" in
     python3 "$BASE_DIR/linux_package/python_cli/zfs_wizard.py"
     ;;
   *)
-    echo "Perdor: $0 {start|stop|restart|status|cli|wizard}"
+    echo "Usage: $0 {start|stop|restart|status|cli|wizard}"
     ;;
 esac`,
 
@@ -84,10 +87,10 @@ esac`,
 import sys, os, subprocess, json
 
 def read_arc_stats():
-    """Lexon statistikat e plota nga /proc/spl/kstat/zfs/arcstats"""
+    """Reads the full ARC statistics from /proc/spl/kstat/zfs/arcstats"""
     kstat_path = "/proc/spl/kstat/zfs/arcstats"
     if not os.path.exists(kstat_path):
-        return {"error": "Kernel ZFS module jo aktiv"}
+        return {"error": "ZFS kernel module is not loaded"}
     
     stats = {}
     with open(kstat_path, "r") as f:
@@ -147,18 +150,18 @@ fn main() {
 }`,
 
     installer: `#!/usr/bin/env bash
-# Automated Root Installer per /root/zfs-enterprise-suite
+# Automated root installer for /root/zfs-enterprise-suite
 INSTALL_DIR="/root/zfs-enterprise-suite"
 mkdir -p "$INSTALL_DIR"
 cp -rf ./* "$INSTALL_DIR/"
 chmod +x "$INSTALL_DIR/zfs-mgr.sh"
 ln -sf "$INSTALL_DIR/zfs-mgr.sh" /usr/local/bin/zfs-mgr
 
-# Regjistro sherbimin Systemd
+# Register the systemd service
 cp "$INSTALL_DIR/linux_package/systemd/zfs-enterprise.service" /etc/systemd/system/
 systemctl daemon-reload
 systemctl enable zfs-enterprise.service
-echo "[OK] Instaluar me sukses ne $INSTALL_DIR!"`,
+echo "[OK] Installed to $INSTALL_DIR"`,
 
     systemd: `[Unit]
 Description=OpenZFS Enterprise Director Web & CLI Service
@@ -188,9 +191,9 @@ WantedBy=multi-user.target`,
             <FolderArchive className="w-5 h-5" />
           </div>
           <div>
-            <div className="text-xs text-slate-400 font-mono">Vendosja ne Linux Server</div>
+            <div className="text-xs text-slate-400 font-mono">{sq ? 'Vendosja ne Linux Server' : 'Linux Server Deployment'}</div>
             <h2 className="text-base font-bold text-white">
-              Dosja e Projektit: /root/zfs-enterprise-suite
+              {sq ? 'Dosja e Projektit' : 'Project Directory'}: /root/zfs-enterprise-suite
             </h2>
           </div>
         </div>
@@ -227,10 +230,10 @@ WantedBy=multi-user.target`,
         <div className="p-4 rounded-xl bg-[#0b1224] border border-slate-800/80 space-y-2">
           <div className="flex items-center gap-2 text-xs font-mono text-sky-400 font-bold">
             <span className="w-5 h-5 rounded-full bg-sky-950 flex items-center justify-center border border-sky-800">1</span>
-            <span>Instalimi ne /root</span>
+            <span>{sq ? 'Instalimi ne /root' : 'Install to /root'}</span>
           </div>
           <p className="text-xs text-slate-400">
-            Kopjoni skedaret ne serverin tuaj Linux dhe jepni te drejta ekzekutimi:
+            {sq ? 'Kopjoni skedaret ne serverin tuaj Linux dhe jepni te drejta ekzekutimi:' : 'Copy the files to your Linux server and make the scripts executable:'}
           </p>
           <div className="p-2 rounded bg-black/50 font-mono text-[11px] text-emerald-400">
             chmod +x zfs-mgr.sh
@@ -242,10 +245,10 @@ WantedBy=multi-user.target`,
         <div className="p-4 rounded-xl bg-[#0b1224] border border-slate-800/80 space-y-2">
           <div className="flex items-center gap-2 text-xs font-mono text-amber-400 font-bold">
             <span className="w-5 h-5 rounded-full bg-amber-950 flex items-center justify-center border border-amber-800">2</span>
-            <span>Nisja me 1 Script</span>
+            <span>{sq ? 'Nisja me 1 Script' : 'Start with one script'}</span>
           </div>
           <p className="text-xs text-slate-400">
-            Startoni gjithe panelin web dhe backend-in ne prapavije me nje komande:
+            {sq ? 'Startoni gjithe panelin web dhe backend-in ne prapavije me nje komande:' : 'Start the web panel and backend in the background with one command:'}
           </p>
           <div className="p-2 rounded bg-black/50 font-mono text-[11px] text-emerald-400">
             ./zfs-mgr.sh start
@@ -260,7 +263,7 @@ WantedBy=multi-user.target`,
             <span>CLI & Wizard</span>
           </div>
           <p className="text-xs text-slate-400">
-            Perdorimi i menjehershem ne terminal permes Python dhe Rust:
+            {sq ? 'Perdorimi i menjehershem ne terminal permes Python dhe Rust:' : 'Use the Python CLI and the terminal wizard right away:'}
           </p>
           <div className="p-2 rounded bg-black/50 font-mono text-[11px] text-emerald-400">
             ./zfs-mgr.sh cli
@@ -335,7 +338,7 @@ WantedBy=multi-user.target`,
             ) : (
               <Copy className="w-3.5 h-3.5" />
             )}
-            <span>{copiedKey === activeCodeTab ? 'Kopjuar' : 'Kopjo Kodin'}</span>
+            <span>{copiedKey === activeCodeTab ? (sq ? 'Kopjuar' : 'Copied') : (sq ? 'Kopjo Kodin' : 'Copy Code')}</span>
           </button>
         </div>
 

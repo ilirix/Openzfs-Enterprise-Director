@@ -40,7 +40,7 @@ export const ConfirmDangerModal: React.FC<Props> = ({ data, onClose, lang }) => 
       case 'modify_property':
         return t('confirm.modifyDeviceDesc');
       default:
-        return 'Ky veprim do te modifikoje konfigurimin e storage-it.';
+        return (lang === 'sq' ? 'Ky veprim do te modifikoje konfigurimin e storage-it.' : 'This action changes the storage configuration.');
     }
   };
 
@@ -81,7 +81,7 @@ export const ConfirmDangerModal: React.FC<Props> = ({ data, onClose, lang }) => 
           <button
             onClick={handleClose}
             className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
-            aria-label="Mbyll"
+            aria-label={lang === 'sq' ? 'Mbyll' : 'Close'}
           >
             <X className="w-5 h-5" />
           </button>
@@ -90,7 +90,7 @@ export const ConfirmDangerModal: React.FC<Props> = ({ data, onClose, lang }) => 
         {/* Target Entity Box */}
         <div className="p-3.5 rounded-lg bg-[#070914] border border-rose-900/60 font-mono text-xs space-y-1">
           <div className="text-slate-400 flex items-center justify-between">
-            <span>Objekti i Synuar:</span>
+            <span>{lang === 'sq' ? 'Objekti i Synuar:' : 'Target:'}</span>
             <span className="text-rose-300 font-bold px-2 py-0.5 rounded bg-rose-950/70 border border-rose-800/60">
               {data.targetName}
             </span>
@@ -116,7 +116,7 @@ export const ConfirmDangerModal: React.FC<Props> = ({ data, onClose, lang }) => 
             type="text"
             value={typedInput}
             onChange={(e) => setTypedInput(e.target.value)}
-            placeholder='Shkruaj "PO" ose "CONFIRM"'
+            placeholder={lang === 'sq' ? 'Shkruaj "PO" ose "CONFIRM"' : 'Type "YES" or "CONFIRM"'}
             className="w-full bg-[#050711] border border-slate-700 focus:border-rose-500 rounded-lg p-2.5 text-xs text-white font-mono focus:outline-none"
             autoFocus
           />

@@ -35,10 +35,10 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const languageCodes: Language[] = ['sq', 'en', 'es', 'zh', 'hi', 'fr', 'de', 'ar'];
+  const languageCodes: Language[] = ['en', 'es', 'zh', 'hi', 'fr', 'de', 'ar', 'sq'];
   const [lang, setLang] = useState<Language>(() => {
     const saved = localStorage.getItem('zfs_lang');
-    return languageCodes.includes(saved as Language) ? (saved as Language) : 'sq';
+    return languageCodes.includes(saved as Language) ? (saved as Language) : 'en';
   });
 
   const selectLanguage = (next: Language) => {
@@ -109,7 +109,7 @@ export default function App() {
       if (data.activeNode?.id) setActiveNodeId(data.activeNode.id);
       setError(null);
     } catch (err: any) {
-      setError(err.message || 'Deshtoi lidhja me sherbimin ZFS');
+      setError(err.message || (lang === 'sq' ? 'Deshtoi lidhja me sherbimin ZFS' : 'Could not connect to the ZFS service'));
     } finally {
       setLoading(false);
     }
@@ -191,7 +191,7 @@ export default function App() {
       const info = await zfsApi.getDeviceInfo(dev);
       setSelectedDeviceInfo(info);
     } catch (err: any) {
-      showNotification(`Gabim ne marrjen e SMART info: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim ne marrjen e SMART info: ${err.message}` : `SMART info error: ${err.message}`);
     }
   };
 
@@ -203,17 +203,17 @@ export default function App() {
   ) => {
     try {
       const res = await zfsApi.deviceAction(pool, dev, action);
-      showNotification(res.message || `Pajisja ${dev} u procedua me sukses!`);
+      showNotification(res.message || (lang === 'sq' ? `Pajisja ${dev} u procedua me sukses!` : `Device ${dev} updated.`));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim me pajisjen: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim me pajisjen: ${err.message}` : `Device error: ${err.message}`);
     }
   };
 
   // Run Benchmark handler
   const handleRunBenchmark = async (poolName: string, testType: string) => {
     const result = await zfsApi.runBenchmark(poolName, testType);
-    showNotification(`Testimi perfundoi: ${result.seq_read_mb_s} MB/s Read | ${result.rand_read_iops} IOPS`);
+    showNotification(lang === 'sq' ? `Testimi perfundoi: ${result.seq_read_mb_s} MB/s Read | ${result.rand_read_iops} IOPS` : `Benchmark finished: ${result.seq_read_mb_s} MB/s read | ${result.rand_read_iops} IOPS`);
     loadZfsState();
     return result;
   };
@@ -221,10 +221,10 @@ export default function App() {
   const handleServiceControl = async (action: 'start' | 'stop' | 'restart') => {
     try {
       const res = await zfsApi.controlService(action);
-      showNotification(res.message || `Sherbimi u ekzekutua me veprimin: ${action}`);
+      showNotification(res.message || (lang === 'sq' ? `Sherbimi u ekzekutua me veprimin: ${action}` : `Service action done: ${action}`));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim: ${err.message}` : `Error: ${err.message}`);
     }
   };
 
@@ -232,40 +232,40 @@ export default function App() {
   const handleScrub = async (poolName: string, action: 'start' | 'stop' | 'pause' = 'start') => {
     try {
       await zfsApi.scrubPool(poolName, action);
-      showNotification(`Scrub ${action} u startua per pool-in ${poolName}!`);
+      showNotification(lang === 'sq' ? `Scrub ${action} u startua per pool-in ${poolName}!` : `Scrub ${action} sent to pool ${poolName}.`);
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim scrub: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim scrub: ${err.message}` : `Scrub error: ${err.message}`);
     }
   };
 
   const handleTrim = async (poolName: string) => {
     try {
       const res = await zfsApi.trimPool(poolName);
-      showNotification(res.message || `TRIM u krye me sukses!`);
+      showNotification(res.message || (lang === 'sq' ? 'TRIM u krye me sukses!' : 'TRIM completed.'));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim TRIM: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim TRIM: ${err.message}` : `TRIM error: ${err.message}`);
     }
   };
 
   const handleAddVdev = async (poolName: string, data: { type: string; disks: string[]; desc?: string }) => {
     try {
       const res = await zfsApi.addVdev(poolName, data);
-      showNotification(res.message || `VDEV ${data.type} u shtua me sukses!`);
+      showNotification(res.message || (lang === 'sq' ? `VDEV ${data.type} u shtua me sukses!` : `VDEV ${data.type} added.`));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim ne shtimin e VDEV: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim ne shtimin e VDEV: ${err.message}` : `Add VDEV error: ${err.message}`);
     }
   };
 
   const handleDestroyPool = async (poolName: string) => {
     try {
       const res = await zfsApi.destroyPool(poolName);
-      showNotification(res.message || `Pool '${poolName}' u fshi me sukses.`);
+      showNotification(res.message || (lang === 'sq' ? `Pool '${poolName}' u fshi me sukses.` : `Pool '${poolName}' destroyed.`));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim ne fshirjen e pool-it: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim ne fshirjen e pool-it: ${err.message}` : `Destroy pool error: ${err.message}`);
     }
   };
 
@@ -273,30 +273,30 @@ export default function App() {
   const handleCreateDataset = async (data: Partial<Dataset>) => {
     try {
       const res = await zfsApi.createDataset(data);
-      showNotification(res.message || `Dataset u krijua me sukses!`);
+      showNotification(res.message || (lang === 'sq' ? 'Dataset u krijua me sukses!' : 'Dataset created.'));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim: ${err.message}` : `Error: ${err.message}`);
     }
   };
 
   const handleUpdateDataset = async (name: string, properties: Record<string, string>) => {
     try {
       const res = await zfsApi.updateDataset(name, properties);
-      showNotification(res.message || `Vetite u modifikuan me sukses!`);
+      showNotification(res.message || (lang === 'sq' ? 'Vetite u modifikuan me sukses!' : 'Properties updated.'));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim: ${err.message}` : `Error: ${err.message}`);
     }
   };
 
   const handleDestroyDataset = async (name: string) => {
     try {
       const res = await zfsApi.destroyDataset(name);
-      showNotification(res.message || `Dataset u fshi me sukses.`);
+      showNotification(res.message || (lang === 'sq' ? 'Dataset u fshi me sukses.' : 'Dataset destroyed.'));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim ne fshirje: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim ne fshirje: ${err.message}` : `Destroy error: ${err.message}`);
     }
   };
 
@@ -304,30 +304,30 @@ export default function App() {
   const handleCreateSnapshot = async (dataset: string, snapName: string) => {
     try {
       const res = await zfsApi.createSnapshot(dataset, snapName);
-      showNotification(res.message || `Snapshot u krijua me sukses!`);
+      showNotification(res.message || (lang === 'sq' ? 'Snapshot u krijua me sukses!' : 'Snapshot created.'));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim: ${err.message}` : `Error: ${err.message}`);
     }
   };
 
   const handleRollback = async (name: string) => {
     try {
       const res = await zfsApi.rollbackSnapshot(name);
-      showNotification(res.message || `Rollback u krye me sukses!`);
+      showNotification(res.message || (lang === 'sq' ? 'Rollback u krye me sukses!' : 'Rollback completed.'));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim rollback: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim rollback: ${err.message}` : `Rollback error: ${err.message}`);
     }
   };
 
   const handleDestroySnapshot = async (name: string) => {
     try {
       const res = await zfsApi.destroySnapshot(name);
-      showNotification(res.message || `Snapshot u fshi.`);
+      showNotification(res.message || (lang === 'sq' ? 'Snapshot u fshi.' : 'Snapshot destroyed.'));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim: ${err.message}` : `Error: ${err.message}`);
     }
   };
 
@@ -341,17 +341,17 @@ export default function App() {
   const handleTuneArc = async (params: any) => {
     try {
       const res = await zfsApi.tuneArc(params);
-      showNotification(res.message || `Parametrat e ARC u aplikuan me sukses!`);
+      showNotification(res.message || (lang === 'sq' ? 'Parametrat e ARC u aplikuan me sukses!' : 'ARC parameters applied.'));
       loadZfsState();
     } catch (err: any) {
-      showNotification(`Gabim ne ARC tuning: ${err.message}`);
+      showNotification(lang === 'sq' ? `Gabim ne ARC tuning: ${err.message}` : `ARC tuning error: ${err.message}`);
     }
   };
 
   // Wizard complete
   const handleWizardComplete = async (data: any) => {
     const res = await zfsApi.createPool(data);
-    showNotification(res.message || `Pool '${data.name}' u krijua me sukses!`);
+    showNotification(res.message || (lang === 'sq' ? `Pool '${data.name}' u krijua me sukses!` : `Pool '${data.name}' created.`));
     await loadZfsState();
     setActiveTab('pools');
   };
@@ -478,7 +478,7 @@ export default function App() {
                   lang={lang}
                   onOpenZSend={(pool) => handleOpenZSend(pool)}
                   onPoolImported={(poolName, msg) => {
-                    showNotification(msg || `Pool '${poolName}' u importua me sukses!`);
+                    showNotification(msg || (lang === 'sq' ? `Pool '${poolName}' u importua me sukses!` : `Pool '${poolName}' imported.`));
                     loadZfsState();
                   }}
                   onRequestDangerConfirm={(data) => setDangerModalData({ ...data, isOpen: true })}
@@ -549,7 +549,7 @@ export default function App() {
               )}
 
               {activeTab === 'terminal' && (
-                <TerminalView onExecute={zfsApi.executeCommand} />
+                <TerminalView onExecute={zfsApi.executeCommand} lang={lang} />
               )}
 
               {state.nodeError && (
@@ -572,6 +572,7 @@ export default function App() {
                 <DeploymentView
                   onServiceControl={handleServiceControl}
                   serviceRunning={state.serviceStatus?.daemonActive ?? true}
+                  lang={lang}
                 />
               )}
             </>

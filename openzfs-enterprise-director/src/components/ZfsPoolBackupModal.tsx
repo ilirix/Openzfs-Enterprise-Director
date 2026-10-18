@@ -251,7 +251,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
       });
       setDryRunResult(res);
     } catch (err: any) {
-      setJsonError(err.message || 'Deshtoi verifikimi paraprak (Dry Run)');
+      setJsonError(err.message || (lang === 'sq' ? 'Deshtoi verifikimi paraprak (Dry Run)' : 'Pre-check (dry run) failed'));
     } finally {
       setImportLoading(false);
     }
@@ -277,7 +277,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
         onPoolImported(res.poolName, res.message);
       }
     } catch (err: any) {
-      setJsonError(err.message || 'Deshtoi importimi i konfigurimit te pool-it');
+      setJsonError(err.message || (lang === 'sq' ? 'Deshtoi importimi i konfigurimit te pool-it' : 'Pool configuration import failed'));
     } finally {
       setImportLoading(false);
     }
@@ -443,10 +443,10 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                 <div className="text-xs text-slate-400 font-mono">
                   {exportedData ? (
                     <span>
-                      Gati për shkarkim: <strong className="text-slate-200">{Math.round(JSON.stringify(exportedData).length / 1024 * 10) / 10} KB</strong> JSON
+                      {lang === 'sq' ? 'Gati për shkarkim: ' : 'Ready to download: '}<strong className="text-slate-200">{Math.round(JSON.stringify(exportedData).length / 1024 * 10) / 10} KB</strong> JSON
                     </span>
                   ) : (
-                    <span>Duke përgatitur të dhënat e eksportit...</span>
+                    <span>{lang === 'sq' ? 'Duke përgatitur të dhënat e eksportit...' : 'Preparing export data...'}</span>
                   )}
                 </div>
 
@@ -518,7 +518,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
               <div className="rounded-xl bg-[#040711] border border-slate-800 overflow-hidden">
                 <div className="px-4 py-2 bg-slate-900/50 border-b border-slate-800 flex items-center justify-between">
                   <span className="text-[11px] font-mono uppercase text-slate-400">
-                    Struktura e Skedarit JSON (ZFS Backup Specification)
+                    {lang === 'sq' ? 'Struktura e Skedarit JSON (ZFS Backup Specification)' : 'JSON File Structure (ZFS Backup Specification)'}
                   </span>
                   <span className="text-[10px] font-mono text-slate-500">
                     formatVersion: openzfs-v2.2-export/1.0
@@ -528,12 +528,12 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                   {exportLoading ? (
                     <div className="flex items-center justify-center py-10 text-slate-500 text-xs font-mono">
                       <RotateCcw className="w-4 h-4 animate-spin mr-2" />
-                      Duke gjeneruar paketën JSON...
+                      {lang === 'sq' ? 'Duke gjeneruar paketën JSON...' : 'Generating JSON package...'}
                     </div>
                   ) : exportedData ? (
                     <pre className="whitespace-pre-wrap">{JSON.stringify(exportedData, null, 2)}</pre>
                   ) : (
-                    <div className="text-slate-500">Nuk ka të dhëna për të shfaqur.</div>
+                    <div className="text-slate-500">{lang === 'sq' ? 'Nuk ka të dhëna për të shfaqur.' : 'No data to show.'}</div>
                   )}
                 </div>
               </div>
@@ -553,8 +553,12 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                     <span className="text-sm font-semibold">{importSuccessResult.message}</span>
                   </div>
                   <div className="text-xs font-mono text-emerald-300/90 pl-7 space-y-1">
-                    <div>Pool-i: <strong>{importSuccessResult.poolName}</strong> ({importSuccessResult.summary?.estimatedSize})</div>
-                    <div>Hierarkia e krijuar: <strong>{importSuccessResult.datasetsCreated} datasets</strong> dhe të gjitha vetitë ZFS janë aktive.</div>
+                    <div>{lang === 'sq' ? 'Pool-i:' : 'Pool:'} <strong>{importSuccessResult.poolName}</strong> ({importSuccessResult.summary?.estimatedSize})</div>
+                    {lang === 'sq' ? (
+                      <div>Hierarkia e krijuar: <strong>{importSuccessResult.datasetsCreated} datasets</strong> dhe të gjitha vetitë ZFS janë aktive.</div>
+                    ) : (
+                      <div>Hierarchy created: <strong>{importSuccessResult.datasetsCreated} datasets</strong>, all ZFS properties are active.</div>
+                    )}
                   </div>
                 </div>
               )}
@@ -602,7 +606,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                         {t('poolBackup.validJson')}
                       </span>
                       <p className="text-xs text-slate-400 font-mono">
-                        Burimi: Pool <strong>{importTargetPool?.name}</strong> · Madhësia: <strong>{importTargetPool?.size}</strong> · VDEVs: <strong>{importTargetPool?.vdevs?.length || 1}</strong>
+                        {lang === 'sq' ? 'Burimi: Pool' : 'Source: pool'} <strong>{importTargetPool?.name}</strong> · {lang === 'sq' ? 'Madhësia:' : 'Size:'} <strong>{importTargetPool?.size}</strong> · VDEVs: <strong>{importTargetPool?.vdevs?.length || 1}</strong>
                       </p>
                     </>
                   ) : (
@@ -614,7 +618,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                         {t('poolBackup.dropOrBrowse')}
                       </span>
                       <p className="text-[11px] text-slate-400">
-                        Mbështet paketa të eksportuara nga OpenZFS Enterprise Manager (.json)
+                        {lang === 'sq' ? 'Mbështet paketa të eksportuara nga OpenZFS Enterprise Manager (.json)' : 'Accepts packages exported by OpenZFS Enterprise Manager (.json)'}
                       </p>
                     </>
                   )}
@@ -641,7 +645,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                         setRawJsonInput(e.target.value);
                         parseJsonContent(e.target.value);
                       }}
-                      placeholder="Ngjit përmbajtjen e skedarit JSON këtu..."
+                      placeholder={lang === 'sq' ? 'Ngjit përmbajtjen e skedarit JSON këtu...' : 'Paste the JSON file content here...'}
                       className="w-full bg-[#050914] border border-slate-700 rounded-lg p-3 text-xs font-mono text-emerald-400 focus:outline-none focus:border-sky-500"
                     />
                   </div>
@@ -707,7 +711,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                           type="text"
                           value={cloneAsName}
                           onChange={(e) => setCloneAsName(e.target.value)}
-                          placeholder="p.sh. tank-enterprise-clone"
+                          placeholder={lang === 'sq' ? 'p.sh. tank-enterprise-clone' : 'e.g. tank-enterprise-clone'}
                           className="w-full bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 font-mono focus:outline-none focus:border-sky-500"
                         />
                       </div>
@@ -719,7 +723,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                           type="text"
                           value={cloneMountPrefix}
                           onChange={(e) => setCloneMountPrefix(e.target.value)}
-                          placeholder="p.sh. /tank-enterprise-clone"
+                          placeholder={lang === 'sq' ? 'p.sh. /tank-enterprise-clone' : 'e.g. /tank-enterprise-clone'}
                           className="w-full bg-slate-900 border border-slate-700 text-white text-xs rounded-lg px-3 py-2 font-mono focus:outline-none focus:border-sky-500"
                         />
                       </div>
@@ -751,7 +755,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-mono font-semibold text-sky-400 flex items-center gap-1.5">
                           <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                          Verifikimi Paraprak (Dry Run): OK
+                          {lang === 'sq' ? 'Verifikimi Paraprak (Dry Run): OK' : 'Pre-check (dry run): OK'}
                         </span>
                         <span className="text-[11px] font-mono text-slate-400">
                           Target: {dryRunResult.summary?.targetName}
@@ -768,11 +772,11 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                           <span className="text-sky-300 font-semibold">{dryRunResult.summary?.datasetCount}</span>
                         </div>
                         <div className="p-2 rounded bg-slate-900/80 border border-slate-800">
-                          <span className="text-[10px] text-slate-500 block">Disqet</span>
+                          <span className="text-[10px] text-slate-500 block">{lang === 'sq' ? 'Disqet' : 'Disks'}</span>
                           <span className="text-emerald-300 font-semibold">{dryRunResult.summary?.diskCount}</span>
                         </div>
                         <div className="p-2 rounded bg-slate-900/80 border border-slate-800">
-                          <span className="text-[10px] text-slate-500 block">Kapaciteti</span>
+                          <span className="text-[10px] text-slate-500 block">{lang === 'sq' ? 'Kapaciteti' : 'Capacity'}</span>
                           <span className="text-white font-semibold">{dryRunResult.summary?.estimatedSize}</span>
                         </div>
                       </div>
@@ -780,7 +784,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
                       {dryRunResult.summary?.commandPreview && (
                         <div className="pt-2">
                           <span className="text-[10px] font-mono text-slate-400 block mb-1">
-                            Komanda e rikonstruktuar që do të ekzekutohet:
+                            {lang === 'sq' ? 'Komanda e rikonstruktuar që do të ekzekutohet:' : 'Reconstructed command that will run:'}
                           </span>
                           <div className="p-2 rounded bg-[#030610] text-[11px] font-mono text-emerald-400 overflow-x-auto border border-slate-800">
                             {dryRunResult.summary.commandPreview}
@@ -838,7 +842,7 @@ export const ZfsPoolBackupModal: React.FC<Props> = ({
             onClick={onClose}
             className="px-3 py-1 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-sans transition-colors cursor-pointer"
           >
-            Mbyll (Close)
+            {lang === 'sq' ? 'Mbyll (Close)' : 'Close'}
           </button>
         </div>
       </div>

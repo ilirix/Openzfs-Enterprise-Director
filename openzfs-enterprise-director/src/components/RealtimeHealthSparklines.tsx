@@ -205,7 +205,7 @@ export const RealtimeHealthSparklines: React.FC<Props> = ({ lang }) => {
                 ? 'bg-amber-950/80 hover:bg-amber-900 text-amber-300 border-amber-800/50'
                 : 'bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700'
             }`}
-            title={isPaused ? 'Vazhdo leximin (Resume)' : 'Pusho leximin (Pause)'}
+            title={isPaused ? (lang === 'sq' ? 'Vazhdo leximin (Resume)' : 'Resume') : (lang === 'sq' ? 'Pusho leximin (Pause)' : 'Pause')}
           >
             {isPaused ? <Play className="w-3 h-3 text-amber-400" /> : <Pause className="w-3 h-3" />}
             <span>{isPaused ? (lang === 'sq' ? 'Vazhdo' : 'Resume') : (lang === 'sq' ? 'Pusho' : 'Pause')}</span>

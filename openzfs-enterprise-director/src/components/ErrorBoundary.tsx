@@ -34,6 +34,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   public render() {
     if (this.state.hasError) {
+      const lang = localStorage.getItem('zfs_lang') === 'sq' ? 'sq' : 'en';
       return (
         <div className="min-h-screen bg-[#070b14] text-slate-100 flex items-center justify-center p-6">
           <div className="w-full max-w-xl bg-[#0c1326] border border-rose-800/80 rounded-2xl p-6 shadow-2xl space-y-5">
@@ -46,7 +47,7 @@ export class ErrorBoundary extends Component<Props, State> {
                   ZFS Director Diagnostic Recovery
                 </h1>
                 <p className="text-xs text-rose-300">
-                  U has një gabim i papritur gjatë renderimit të ndërfaqes.
+                  {lang === 'sq' ? 'U has një gabim i papritur gjatë renderimit të ndërfaqes.' : 'An unexpected error occurred while rendering the interface.'}
                 </p>
               </div>
             </div>
@@ -65,14 +66,14 @@ export class ErrorBoundary extends Component<Props, State> {
             <div className="flex items-center justify-between pt-2">
               <span className="text-xs text-slate-400 flex items-center gap-1.5 font-mono">
                 <Terminal className="w-3.5 h-3.5 text-sky-400" />
-                Backend ZFS API mbetet aktiv në sfond
+                {lang === 'sq' ? 'Backend ZFS API mbetet aktiv në sfond' : 'The ZFS API backend keeps running in the background'}
               </span>
               <button
                 onClick={this.handleReset}
                 className="px-4 py-2 rounded-xl bg-sky-600 hover:bg-sky-500 text-white text-xs font-medium font-mono flex items-center gap-2 transition cursor-pointer"
               >
                 <RefreshCw className="w-3.5 h-3.5" />
-                Rifresko Sistemin (Reload)
+                {lang === 'sq' ? 'Rifresko Sistemin (Reload)' : 'Reload'}
               </button>
             </div>
           </div>

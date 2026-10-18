@@ -1,0 +1,11 @@
+server,run,startup_ms,idle_rss_kb
+node,1,310,63772
+node,2,152,64672
+node,3,150,64408
+node,4,141,64428
+node,5,170,64464
+rust,1,9,3672
+rust,2,9,3644
+rust,3,7,3572
+rust,4,8,3432
+rust,5,8,3684

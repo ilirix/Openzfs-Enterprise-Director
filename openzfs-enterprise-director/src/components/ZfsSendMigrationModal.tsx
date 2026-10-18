@@ -246,7 +246,7 @@ export const ZfsSendMigrationModal: React.FC<Props> = ({
       setActiveMigration(res.migration);
       pollMigration();
     } catch (err: any) {
-      setErrorMsg(err.message || 'Deshtoi nisja e migrimit ZFS Z-Send');
+      setErrorMsg(err.message || (lang === 'sq' ? 'Deshtoi nisja e migrimit ZFS Z-Send' : 'Failed to start the ZFS Z-Send migration'));
     } finally {
       setIsStarting(false);
     }
@@ -260,7 +260,7 @@ export const ZfsSendMigrationModal: React.FC<Props> = ({
       await zfsApi.abortZSendMigration(activeMigration.migrationId);
       await pollMigration();
     } catch (err: any) {
-      setErrorMsg(err.message || 'Deshtoi nderprerja e migrimit');
+      setErrorMsg(err.message || (lang === 'sq' ? 'Deshtoi nderprerja e migrimit' : 'Failed to cancel the migration'));
     } finally {
       setIsAborting(false);
     }
@@ -294,7 +294,7 @@ export const ZfsSendMigrationModal: React.FC<Props> = ({
           <button
             onClick={onClose}
             className="p-1.5 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition-colors cursor-pointer"
-            aria-label="Mbyll"
+            aria-label={lang === 'sq' ? 'Mbyll' : 'Close'}
           >
             <X className="w-5 h-5" />
           </button>
@@ -411,7 +411,7 @@ export const ZfsSendMigrationModal: React.FC<Props> = ({
                 <div className="p-2.5 rounded-lg bg-[#050914] border border-slate-800">
                   <span className="text-slate-500 block text-[10px]">{lang === 'sq' ? 'Koha e Kalimit' : 'Elapsed Time'}</span>
                   <div className="flex items-center gap-1 mt-1 text-slate-200 font-bold text-xs">
-                    <span>{activeMigration.elapsedSeconds} sekonda</span>
+                    <span>{activeMigration.elapsedSeconds}{lang === 'sq' ? ' sekonda' : ' seconds'}</span>
                   </div>
                 </div>
 
@@ -419,14 +419,14 @@ export const ZfsSendMigrationModal: React.FC<Props> = ({
                   <span className="text-slate-500 block text-[10px]">{lang === 'sq' ? 'Checksum Fletcher4' : 'Checksum Fletcher4'}</span>
                   <div className="flex items-center gap-1 mt-1 text-emerald-400 font-bold text-xs">
                     <ShieldCheck className="w-3.5 h-3.5" />
-                    <span>{activeMigration.checksumMatches ? '100% Validuar' : 'Duke Verifikuar'}</span>
+                    <span>{activeMigration.checksumMatches ? (lang === 'sq' ? '100% Validuar' : '100% verified') : (lang === 'sq' ? 'Duke Verifikuar' : 'Verifying')}</span>
                   </div>
                 </div>
               </div>
 
               {/* CLI Command Info */}
               <div className="p-2.5 rounded-lg bg-[#040712] border border-slate-800/80 text-[11px] text-slate-400 overflow-x-auto">
-                <span className="text-indigo-400 font-bold block mb-1">Pipelina CLI e Ekzekutuar:</span>
+                <span className="text-indigo-400 font-bold block mb-1">{lang === 'sq' ? 'Pipelina CLI e Ekzekutuar:' : 'Executed CLI pipeline:'}</span>
                 <code>{activeMigration.cliCommandExecuted}</code>
               </div>
             </div>
@@ -679,12 +679,12 @@ export const ZfsSendMigrationModal: React.FC<Props> = ({
                 <table className="w-full text-left text-xs font-mono">
                   <thead>
                     <tr className="border-b border-slate-800 text-slate-500 text-[10px]">
-                      <th className="pb-2">Burimi</th>
-                      <th className="pb-2">Destinacioni</th>
-                      <th className="pb-2">Statusi</th>
-                      <th className="pb-2">Vëllimi</th>
-                      <th className="pb-2">Shpejtësia Mesatare</th>
-                      <th className="pb-2">Koha</th>
+                      <th className="pb-2">{lang === 'sq' ? 'Burimi' : 'Source'}</th>
+                      <th className="pb-2">{lang === 'sq' ? 'Destinacioni' : 'Target'}</th>
+                      <th className="pb-2">{lang === 'sq' ? 'Statusi' : 'Status'}</th>
+                      <th className="pb-2">{lang === 'sq' ? 'Vëllimi' : 'Size'}</th>
+                      <th className="pb-2">{lang === 'sq' ? 'Shpejtësia Mesatare' : 'Average Speed'}</th>
+                      <th className="pb-2">{lang === 'sq' ? 'Koha' : 'Time'}</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-slate-800/60">

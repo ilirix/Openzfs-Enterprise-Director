@@ -36,7 +36,7 @@ interface Props {
 
 export const ScrubScheduler: React.FC<Props> = ({
   pools,
-  lang = 'sq',
+  lang = 'en',
   onClose,
   isModal = false,
 }) => {
@@ -121,7 +121,9 @@ export const ScrubScheduler: React.FC<Props> = ({
         maintenanceWindow: {
           startTime: formWindowStart,
           endTime: formWindowEnd,
-          days: formFrequency === 'weekly' ? [['Dje', 'Hën', 'Mar', 'Mër', 'Enj', 'Pre', 'Sht'][formDayOfWeek]] : ['Dritare e rregullt'],
+          days: formFrequency === 'weekly'
+            ? [(lang === 'sq' ? ['Dje', 'Hën', 'Mar', 'Mër', 'Enj', 'Pre', 'Sht'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'])[formDayOfWeek]]
+            : [lang === 'sq' ? 'Dritare e rregullt' : 'Regular window'],
         },
         description: formDescription || `ZFS Pool Scrub Cron (${cronExpr})`,
         autoPauseOnHeavyLoad: formAutoPause,
@@ -132,7 +134,7 @@ export const ScrubScheduler: React.FC<Props> = ({
       setShowCreateModal(false);
       showNotice(lang === 'sq' ? 'Orari i scrub-it u ruajt me sukses!' : 'Scrub schedule saved successfully!');
     } catch (err: any) {
-      alert(err.message || 'Deshtoi ruajtja');
+      alert(err.message || (lang === 'sq' ? 'Deshtoi ruajtja' : 'Save failed'));
     }
   };
 
@@ -364,7 +366,7 @@ ${schedules
                     }
                   }}
                   className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 cursor-pointer"
-                  title="Muaji i kaluar"
+                  title={lang === 'sq' ? 'Muaji i kaluar' : 'Previous month'}
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
@@ -378,7 +380,7 @@ ${schedules
                     }
                   }}
                   className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-800 cursor-pointer"
-                  title="Muaji i ardhshem"
+                  title={lang === 'sq' ? 'Muaji i ardhshem' : 'Next month'}
                 >
                   <ChevronRight className="w-4 h-4" />
                 </button>
@@ -432,7 +434,7 @@ ${schedules
                       </span>
                       {isToday && (
                         <span className="text-[9px] font-mono uppercase px-1 rounded bg-indigo-500 text-white font-bold">
-                          SOT
+                          {lang === 'sq' ? 'SOT' : 'TODAY'}
                         </span>
                       )}
                     </div>
@@ -493,7 +495,7 @@ ${schedules
               <button
                 onClick={loadSchedules}
                 className="text-slate-400 hover:text-white text-xs flex items-center gap-1 cursor-pointer"
-                title="Rifresko"
+                title={lang === 'sq' ? 'Rifresko' : 'Refresh'}
               >
                 <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? 'animate-spin' : ''}`} />
               </button>

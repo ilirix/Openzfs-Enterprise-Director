@@ -10,7 +10,7 @@
       "frag": "6%",
       "dedup": "1.00x",
       "ashift": 12,
-      "status": "Pajisja /dev/sdb u modifikua ne ONLINE. Pool health is monitored.",
+      "status": "Device /dev/sdb set to ONLINE. Pool health is monitored.",
       "scrub_status": "Scrub in progress: 2.4% done, 0 errors, ETA: 01:30:00",
       "scrub_active": true,
       "last_scrub": "Just started",

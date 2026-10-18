@@ -259,7 +259,7 @@ Summary: ${r.summary}`
           <button
             onClick={handleExportCsv}
             className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-emerald-950/80 hover:bg-emerald-900 text-emerald-300 border border-emerald-800/50 flex items-center gap-1.5 transition-colors cursor-pointer"
-            title="Eksporto te dhenat ne format CSV per spreadsheet"
+            title={lang === 'sq' ? 'Eksporto te dhenat ne format CSV per spreadsheet' : 'Export data as CSV for spreadsheets'}
           >
             <FileSpreadsheet className="w-3.5 h-3.5" />
             <span>CSV</span>
@@ -268,7 +268,7 @@ Summary: ${r.summary}`
           <button
             onClick={handleExportJson}
             className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-sky-950/80 hover:bg-sky-900 text-sky-300 border border-sky-800/50 flex items-center gap-1.5 transition-colors cursor-pointer"
-            title="Eksporto te dhenat e plota ne format JSON"
+            title={lang === 'sq' ? 'Eksporto te dhenat e plota ne format JSON' : 'Export full data as JSON'}
           >
             <FileJson className="w-3.5 h-3.5" />
             <span>JSON</span>
@@ -277,7 +277,7 @@ Summary: ${r.summary}`
           <button
             onClick={handleExportMd}
             className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 flex items-center gap-1.5 transition-colors cursor-pointer"
-            title="Eksporto permbledhjen ne format Markdown"
+            title={lang === 'sq' ? 'Eksporto permbledhjen ne format Markdown' : 'Export the summary as Markdown'}
           >
             <Download className="w-3.5 h-3.5 text-amber-400" />
             <span>Markdown</span>
@@ -362,7 +362,7 @@ Summary: ${r.summary}`
               <span className="text-base font-bold text-sky-400 block mt-1">
                 {currentResult.seq_read_mb_s.toLocaleString()} MB/s
               </span>
-              <span className="text-[10px] text-slate-500 font-sans">Kujtesa ARC RAM</span>
+              <span className="text-[10px] text-slate-500 font-sans">{lang === 'sq' ? 'Kujtesa ARC RAM' : 'ARC RAM cache'}</span>
             </div>
 
             <div className="p-3 rounded-lg bg-[#070d1c] border border-slate-800">
@@ -370,7 +370,7 @@ Summary: ${r.summary}`
               <span className="text-base font-bold text-amber-400 block mt-1">
                 {currentResult.seq_write_mb_s.toLocaleString()} MB/s
               </span>
-              <span className="text-[10px] text-slate-500 font-sans">SLOG + Disqet fizike</span>
+              <span className="text-[10px] text-slate-500 font-sans">{lang === 'sq' ? 'SLOG + Disqet fizike' : 'SLOG + physical disks'}</span>
             </div>
 
             <div className="p-3 rounded-lg bg-[#070d1c] border border-slate-800">
@@ -394,7 +394,7 @@ Summary: ${r.summary}`
               <span className="text-base font-bold text-indigo-400 block mt-1">
                 {currentResult.avg_latency_ms} ms
               </span>
-              <span className="text-[10px] text-slate-500 font-sans">Sub-milisekondë</span>
+              <span className="text-[10px] text-slate-500 font-sans">{lang === 'sq' ? 'Sub-milisekondë' : 'Sub-millisecond'}</span>
             </div>
 
             <div className="p-3 rounded-lg bg-[#070d1c] border border-slate-800">
@@ -595,21 +595,21 @@ Summary: ${r.summary}`
                         </div>
                         <div className="text-[11px] space-y-1 font-sans">
                           <div className="flex justify-between">
-                            <span className="text-slate-400">Kohezgjatja:</span>
+                            <span className="text-slate-400">{lang === 'sq' ? 'Kohezgjatja:' : 'Duration:'}</span>
                             <span className="text-sky-300 font-bold font-mono">
                               {data.durationMinutes} min ({data.durationFormatted})
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-400">Shpejtesia Mesatare:</span>
+                            <span className="text-slate-400">{lang === 'sq' ? 'Shpejtesia Mesatare:' : 'Average speed:'}</span>
                             <span className="text-slate-200 font-mono">{data.rateMbS} MB/s</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-400">Te Dhena te Verifikuara:</span>
+                            <span className="text-slate-400">{lang === 'sq' ? 'Te Dhena te Verifikuara:' : 'Data verified:'}</span>
                             <span className="text-slate-200 font-mono">{data.dataScrubbedTb} TB</span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-400">Gabime Checksum:</span>
+                            <span className="text-slate-400">{lang === 'sq' ? 'Gabime Checksum:' : 'Checksum errors:'}</span>
                             <span
                               className={`font-mono font-bold ${
                                 data.checksumErrors > 0 ? 'text-rose-400' : 'text-emerald-400'
@@ -619,7 +619,7 @@ Summary: ${r.summary}`
                             </span>
                           </div>
                           <div className="flex justify-between">
-                            <span className="text-slate-400">Rreziku i Degradimit:</span>
+                            <span className="text-slate-400">{lang === 'sq' ? 'Rreziku i Degradimit:' : 'Degradation risk:'}</span>
                             <span
                               className={`font-mono font-bold ${
                                 data.degradationRiskPct > 40
@@ -700,7 +700,7 @@ Summary: ${r.summary}`
                 : "Scrub duration on 'tank-enterprise' climbed steadily from 142 minutes (2026-08-03) to 215 minutes (2026-10-10). The last two scrub passes logged read timeouts and 5 self-healed checksum errors localized to /dev/sde. When magnetic drives develop marginal heads or pending reallocations, ZFS experiences I/O retry loops before falling back to RAIDZ2 parity, manifesting as prolonged scrub times. Replace /dev/sde proactively before total failure!"}
             </p>
             <div className="pt-1 flex items-center justify-between text-[11px] font-mono text-rose-300">
-              <span>Pajisja e dyshuar: /dev/sde (Seagate Exos X16 - WNA1K28491027)</span>
+              <span>{lang === 'sq' ? 'Pajisja e dyshuar: /dev/sde (Seagate Exos X16 - WNA1K28491027)' : 'Suspect device: /dev/sde (Seagate Exos X16 - WNA1K28491027)'}</span>
               <span className="text-amber-400 font-bold">SMART Reallocated Count: 18</span>
             </div>
           </div>

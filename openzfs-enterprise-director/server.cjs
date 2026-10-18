@@ -22828,14 +22828,14 @@ var PACKAGE_CATALOG = [
     id: "zfsutils-linux",
     bins: ["zpool"],
     label: "OpenZFS (zfsutils-linux)",
-    description: "zpool dhe zfs p\xEBr pool-e, dataset-e dhe ARC reale",
+    description: "zpool and zfs for real pools, datasets and ARC",
     required: true
   },
   {
     id: "smartmontools",
     bins: ["smartctl"],
     label: "smartmontools",
-    description: "SMART p\xEBr temperatur\xEBn dhe sh\xEBndetin e disqeve",
+    description: "SMART for disk temperature and health",
     required: false
   },
   {
@@ -22849,7 +22849,7 @@ var PACKAGE_CATALOG = [
     id: "python3",
     bins: ["python3"],
     label: "Python 3",
-    description: "CLI zfs_manager.py dhe wizard-i n\xEB terminal",
+    description: "zfs_manager.py CLI and the terminal wizard",
     required: false
   }
 ];
@@ -23826,7 +23826,7 @@ app.post("/api/system/packages/install", (req, res) => {
   const allowed = new Set(PACKAGE_CATALOG.map((item) => item.id));
   const selected = requested.filter((id2) => allowed.has(id2));
   if (selected.length === 0) {
-    res.status(400).json({ error: "Zgjidh t\xEB pakt\xEBn nj\xEB paket\xEB nga lista." });
+    res.status(400).json({ error: "Select at least one package from the list." });
     return;
   }
   const id = `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
@@ -23866,7 +23866,7 @@ ${err.message}
 app.get("/api/system/packages/install/:id", (req, res) => {
   const job = installJobs.get(req.params.id);
   if (!job) {
-    res.status(404).json({ error: "Instalimi nuk u gjet." });
+    res.status(404).json({ error: "Installation not found." });
     return;
   }
   res.json({
@@ -23913,7 +23913,7 @@ app.get("/api/zfs/system/hardware", (req, res) => {
         firmwareVersion: "IT Mode FW 16.00.12.00-IT (BIOS 08.37.00.00)",
         temperatureC: 48,
         status: "ONLINE",
-        details: "Kontrollori kryesor p\xEBr vargun e disqeve mekanike dhe SAS SSD me x8 PCIe Gen3 linja t\xEB dedikuara.",
+        details: "Primary controller for the HDD and SAS SSD array, with 8 dedicated PCIe Gen3 lanes.",
         connectedDevices: ["/dev/sdb", "/dev/sdc", "/dev/sdd", "/dev/sde", "/dev/sdf", "/dev/sdg"]
       },
       {
@@ -23926,7 +23926,7 @@ app.get("/api/zfs/system/hardware", (req, res) => {
         firmwareVersion: "FW 1.28.00 (PLX PEX88048 Switch ASIC)",
         temperatureC: 43,
         status: "ONLINE",
-        details: "Nd\xEBrlidhje me ultra-shpejt\xEBsi t\xEB lart\xEB p\xEBr flash arrays (NVMe U.2/U.3) p\xEBr SLOG ZIL dhe L2ARC.",
+        details: "High-speed interconnect for NVMe U.2/U.3 flash used by the SLOG (ZIL) and L2ARC.",
         connectedDevices: ["/dev/nvme0n1", "/dev/nvme1n1", "/dev/nvme2n1", "/dev/nvme3n1", "/dev/nvme4n1", "/dev/nvme5n1"]
       },
       {
@@ -23939,7 +23939,7 @@ app.get("/api/zfs/system/hardware", (req, res) => {
         firmwareVersion: "FW 22.39.1002 (PXE 3.7.0201)",
         temperatureC: 51,
         status: "ONLINE",
-        details: "Karta e rrjetit p\xEBr replikim ZFS Z-Send n\xEB shpejt\xEBsi linje dhe ndarje iSCSI/NFS/NVMe-oF pa CPU overhead.",
+        details: "Network card for line-rate ZFS Z-Send replication and iSCSI/NFS/NVMe-oF sharing with offload.",
         connectedDevices: ["eth0 (Storage Fabric A)", "eth1 (Storage Fabric B)"]
       },
       {
@@ -23952,7 +23952,7 @@ app.get("/api/zfs/system/hardware", (req, res) => {
         firmwareVersion: "IPMI FW v3.86 (Redfish REST API v1.11 Enabled)",
         temperatureC: 39,
         status: "ONLINE",
-        details: "Monitorim harduerik 24/7, telemetri voltazhi, rrotullim i ventilator\xEBve dhe kontroll i energjis\xEB.",
+        details: "24/7 hardware monitoring: voltage telemetry, fan speed and power control.",
         connectedDevices: ["Dedicated IPMI Port (MAC: 00:25:90:EA:41:88)"]
       },
       {
@@ -23965,7 +23965,7 @@ app.get("/api/zfs/system/hardware", (req, res) => {
         firmwareVersion: "PMBus FW 1.04",
         temperatureC: 38,
         status: "ONLINE",
-        details: "Furnizuesi kryesor me efikasitet 96%, ngarkes\xEB aktuale 285 Watt."
+        details: "Primary supply, 96% efficiency, current load 285 W."
       },
       {
         id: "psu_02",
@@ -23977,7 +23977,7 @@ app.get("/api/zfs/system/hardware", (req, res) => {
         firmwareVersion: "PMBus FW 1.04",
         temperatureC: 36,
         status: "STANDBY",
-        details: "Furnizuesi sekondar me nd\xEBrrim t\xEB menj\xEBhersh\xEBm (zero downtime failover)."
+        details: "Secondary supply with instant switchover (zero-downtime failover)."
       },
       {
         id: "cooling_chassis_01",
@@ -23989,7 +23989,7 @@ app.get("/api/zfs/system/hardware", (req, res) => {
         firmwareVersion: "BMC Zone Control v2.1",
         temperatureC: 22,
         status: "ONLINE",
-        details: "Shpejt\xEBsia mesatare 4,350 RPM. Presion pozitiv ajri p\xEBr ftohjen e disqeve dhe kontrollove HBA."
+        details: "Average 4,350 RPM. Positive air pressure for cooling the disks and HBA controllers."
       }
     ],
     chassisThermal: {
@@ -24651,12 +24651,12 @@ app.post("/api/zfs/devices/action", async (req, res) => {
   }
   const state = getState();
   if (!poolName || !dev || !action) {
-    return res.status(400).json({ error: "Mungon pool, dev ose action" });
+    return res.status(400).json({ error: "Missing pool, dev or action" });
   }
   const pool = state.pools.find((p) => p.name === poolName);
-  if (!pool) return res.status(404).json({ error: `Pool-i '${poolName}' nuk u gjet` });
+  if (!pool) return res.status(404).json({ error: `Pool '${poolName}' not found` });
   if (action === "offline" || action === "online") {
-    pool.status = `Pajisja ${dev} u modifikua ne ${action.toUpperCase()}. Pool health is monitored.`;
+    pool.status = `Device ${dev} set to ${action.toUpperCase()}. Pool health is monitored.`;
     saveState(state);
     addSystemLog({
       level: action === "offline" ? "WARN" : "INFO",
@@ -24667,7 +24667,7 @@ app.post("/api/zfs/devices/action", async (req, res) => {
     });
     return res.json({
       status: "success",
-      message: `Pajisja ${dev} u modifikua ne statusin: ${action.toUpperCase()}`,
+      message: `Device ${dev} changed to state: ${action.toUpperCase()}`,
       pool
     });
   }
@@ -24691,11 +24691,11 @@ app.post("/api/zfs/devices/action", async (req, res) => {
     });
     return res.json({
       status: "success",
-      message: `Pajisja ${dev} u hoq/shkeput me sukses nga pool-i '${poolName}'.`,
+      message: `Device ${dev} was removed/detached from pool '${poolName}'.`,
       pool
     });
   }
-  res.status(400).json({ error: `Veprimi ${action} nuk njihet` });
+  res.status(400).json({ error: `Unknown action ${action}` });
 });
 app.post("/api/zfs/benchmark/run", (req, res) => {
   if (useRealHost()) {
@@ -24822,7 +24822,7 @@ app.post("/api/zfs/pools", async (req, res) => {
   const state = getState();
   const { name, ashift = 12, topology = "raidz2", disks = [], slogDisks = [], l2arcDisks = [], specialDisks = [], spareDisks = [], compression = "zstd", recordsize = "128K" } = req.body;
   if (!name || !String(name).trim()) {
-    return res.status(400).json({ error: "Emri i pool-it eshte i detyrueshem" });
+    return res.status(400).json({ error: "Pool name is required" });
   }
   if (!/^[A-Za-z][A-Za-z0-9_.-]{0,63}$/.test(String(name))) {
     return res.status(400).json({ error: "Pool name must start with a letter and contain only letters, numbers, dot, underscore, or dash." });
@@ -24877,7 +24877,7 @@ app.post("/api/zfs/pools", async (req, res) => {
   }
   const existing = state.pools.find((p) => p.name === name);
   if (existing) {
-    return res.status(400).json({ error: `Pool-i '${name}' ekziston tashme!` });
+    return res.status(400).json({ error: `Pool '${name}' already exists.` });
   }
   const newVdevs = [
     {
@@ -24962,7 +24962,7 @@ app.post("/api/zfs/pools", async (req, res) => {
     readonly: "off"
   });
   saveState(state);
-  res.json({ status: "success", message: `Pool '${name}' u krijua me sukses!`, pool: newPool });
+  res.json({ status: "success", message: `Pool '${name}' created.`, pool: newPool });
 });
 app.post("/api/zfs/pools/:name/scrub", async (req, res) => {
   if (useRealHost()) {
@@ -24976,7 +24976,7 @@ app.post("/api/zfs/pools/:name/scrub", async (req, res) => {
   }
   const state = getState();
   const pool = state.pools.find((p) => p.name === req.params.name);
-  if (!pool) return res.status(404).json({ error: "Pool-i nuk u gjet" });
+  if (!pool) return res.status(404).json({ error: "Pool not found" });
   const { action = "start" } = req.body;
   if (action === "start") {
     pool.scrub_active = true;
@@ -24999,10 +24999,10 @@ app.post("/api/zfs/pools/:name/trim", async (req, res) => {
   }
   const state = getState();
   const pool = state.pools.find((p) => p.name === req.params.name);
-  if (!pool) return res.status(404).json({ error: "Pool-i nuk u gjet" });
+  if (!pool) return res.status(404).json({ error: "Pool not found" });
   pool.status = "TRIM command completed for all SSD/NVMe vdevs. LBA reclaimed.";
   saveState(state);
-  res.json({ status: "success", message: `TRIM u krye per ${pool.name}` });
+  res.json({ status: "success", message: `TRIM completed for ${pool.name}` });
 });
 var defaultScrubSchedules = [
   {
@@ -25229,7 +25229,7 @@ app.post("/api/zfs/scrub-schedules", (req, res) => {
     autoPauseOnHeavyLoad = true
   } = req.body;
   if (!poolName) {
-    return res.status(400).json({ error: "Emri i pool-it eshte i detyrueshem" });
+    return res.status(400).json({ error: "Pool name is required" });
   }
   const existingIndex = state.scrubSchedules.findIndex((s) => s.id === id);
   const scheduleId = id || `sched-${Date.now().toString().slice(-4)}`;
@@ -25249,7 +25249,7 @@ app.post("/api/zfs/scrub-schedules", (req, res) => {
     nextRun: `2026-10-${Math.floor(Math.random() * 10 + 15).toString().padStart(2, "0")} ${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}:00`,
     lastRun: "2026-10-11 02:00:00",
     lastStatus: "SUCCESS",
-    description: description || `Scrub i planifikuar per ${poolName}`,
+    description: description || `Scheduled scrub for ${poolName}`,
     autoPauseOnHeavyLoad
   };
   if (existingIndex >= 0) {
@@ -25274,7 +25274,7 @@ app.delete("/api/zfs/scrub-schedules/:id", (req, res) => {
   const initialCount = state.scrubSchedules.length;
   state.scrubSchedules = state.scrubSchedules.filter((s) => s.id !== req.params.id);
   if (state.scrubSchedules.length === initialCount) {
-    return res.status(404).json({ error: "Orari nuk u gjet" });
+    return res.status(404).json({ error: "Schedule not found" });
   }
   saveState(state);
   res.json({ status: "success", schedules: state.scrubSchedules });
@@ -25284,7 +25284,7 @@ app.post("/api/zfs/scrub-schedules/:id/toggle", (req, res) => {
   const state = getState();
   if (!state.scrubSchedules) state.scrubSchedules = defaultScrubSchedules;
   const schedule = state.scrubSchedules.find((s) => s.id === req.params.id);
-  if (!schedule) return res.status(404).json({ error: "Orari nuk u gjet" });
+  if (!schedule) return res.status(404).json({ error: "Schedule not found" });
   schedule.enabled = !schedule.enabled;
   saveState(state);
   addSystemLog({
@@ -25301,7 +25301,7 @@ app.post("/api/zfs/scrub-schedules/:id/run", async (req, res) => {
   const state = getState();
   if (!state.scrubSchedules) state.scrubSchedules = defaultScrubSchedules;
   const schedule = state.scrubSchedules.find((s) => s.id === req.params.id);
-  if (!schedule) return res.status(404).json({ error: "Orari nuk u gjet" });
+  if (!schedule) return res.status(404).json({ error: "Schedule not found" });
   const pool = state.pools.find((p) => p.name === schedule.poolName);
   if (pool) {
     pool.scrub_active = true;
@@ -25753,7 +25753,7 @@ app.post("/api/zfs/drives/simulate-acceleration", (req, res) => {
   }
   res.json({
     status: "success",
-    message: `Gjendja e simulimit te pershpejtuar per ${dev} u vendos ne: ${accelerate ? "AKTIVE (PERSHPEJTIM)" : "NORMALE"}`,
+    message: `Accelerated-degradation simulation for ${dev} set to: ${accelerate ? "ACTIVE (ACCELERATED)" : "NORMAL"}`,
     drive: dev,
     isAccelerating: Boolean(accelerate)
   });
@@ -25774,10 +25774,10 @@ app.post("/api/zfs/pools/:name/vdev", async (req, res) => {
   }
   const state = getState();
   const pool = state.pools.find((p) => p.name === req.params.name);
-  if (!pool) return res.status(404).json({ error: "Pool-i nuk u gjet" });
+  if (!pool) return res.status(404).json({ error: "Pool not found" });
   const { type, disks, desc } = req.body;
   if (!type || !disks || !disks.length) {
-    return res.status(400).json({ error: "Lloji i VDEV dhe disqet jane te detyrueshme" });
+    return res.status(400).json({ error: "VDEV type and disks are required" });
   }
   const vdevName = `${type}-${Date.now().toString().slice(-4)}`;
   pool.vdevs.push({
@@ -25789,7 +25789,7 @@ app.post("/api/zfs/pools/:name/vdev", async (req, res) => {
     capacity: "1.92T"
   });
   saveState(state);
-  res.json({ status: "success", message: `VDEV ${type} u shtua me sukses ne ${pool.name}!`, pool });
+  res.json({ status: "success", message: `VDEV ${type} added to ${pool.name}.`, pool });
 });
 app.delete("/api/zfs/pools/:name", async (req, res) => {
   if (useRealHost()) {
@@ -25801,13 +25801,13 @@ app.delete("/api/zfs/pools/:name", async (req, res) => {
   }
   const state = getState();
   const poolIndex = state.pools.findIndex((p) => p.name === req.params.name);
-  if (poolIndex === -1) return res.status(404).json({ error: "Pool-i nuk u gjet" });
+  if (poolIndex === -1) return res.status(404).json({ error: "Pool not found" });
   const poolName = state.pools[poolIndex].name;
   state.pools.splice(poolIndex, 1);
   state.datasets = state.datasets.filter((d) => !d.name.startsWith(poolName));
   state.snapshots = state.snapshots.filter((s) => !s.name.startsWith(poolName));
   saveState(state);
-  res.json({ status: "success", message: `Pool '${poolName}' u fshi me sukses.` });
+  res.json({ status: "success", message: `Pool '${poolName}' destroyed.` });
 });
 function buildPoolExportPackage(pool, state) {
   const poolDatasets = (state.datasets || []).filter(
@@ -25934,7 +25934,7 @@ app.get("/api/zfs/pools/:name/export", async (req, res) => {
   }
   const state = getState();
   const pool = state.pools.find((p) => p.name.toLowerCase() === req.params.name.toLowerCase());
-  if (!pool) return res.status(404).json({ error: `Pool-i '${req.params.name}' nuk u gjet.` });
+  if (!pool) return res.status(404).json({ error: `Pool '${req.params.name}' not found.` });
   const exportData = buildPoolExportPackage(pool, state);
   res.setHeader("Content-Type", "application/json");
   res.json(exportData);
@@ -25982,7 +25982,7 @@ app.post("/api/zfs/pools/import", (req, res) => {
     selectedDisks = []
   } = req.body;
   if (!config) {
-    return res.status(400).json({ error: "Konfigurimi JSON eshte i detyrueshem" });
+    return res.status(400).json({ error: "JSON configuration is required" });
   }
   let poolConfig = config.pool ? config : config.pools ? config.pools[0] : null;
   if (!poolConfig && config.name && config.vdevs) {
@@ -25990,18 +25990,18 @@ app.post("/api/zfs/pools/import", (req, res) => {
   }
   if (!poolConfig || !poolConfig.pool || !poolConfig.pool.name) {
     return res.status(400).json({
-      error: 'Struktura JSON eshte e pavlefshme: mungon nyja "pool" ose "name". Sigurohuni qe skedari eshte eksport i vlefshem ZFS.'
+      error: 'Invalid JSON structure: the "pool" or "name" node is missing. Make sure the file is a valid ZFS export.'
     });
   }
   const origPoolName = poolConfig.pool.name;
   const isClone = mode === "clone";
   const targetName = (isClone ? cloneAsName || `${origPoolName}-clone` : origPoolName).trim();
   if (!targetName) {
-    return res.status(400).json({ error: "Emri i pool-it te destinacionit eshte i detyrueshem" });
+    return res.status(400).json({ error: "Target pool name is required" });
   }
   if (!/^[a-zA-Z0-9_\-.:]+$/.test(targetName)) {
     return res.status(400).json({
-      error: "Emri i pool-it permban karaktere te pavlefshme. Perdorni vetem shkronja, numra, viza dhe nenviza."
+      error: "The pool name has invalid characters. Use only letters, digits, hyphens and underscores."
     });
   }
   const existingIndex = state.pools.findIndex(
@@ -26011,15 +26011,15 @@ app.post("/api/zfs/pools/import", (req, res) => {
   if (existingIndex !== -1) {
     if (isClone) {
       return res.status(400).json({
-        error: `Pool-i me emrin '${targetName}' ekziston tashme ne kete sistem! Zgjidhni nje emer unik per klonin.`
+        error: `A pool named '${targetName}' already exists on this system. Choose a unique name for the clone.`
       });
     } else if (!overwrite && !dryRun) {
       return res.status(409).json({
         conflict: true,
-        error: `Pool-i '${targetName}' ekziston tashme ne sistem. Zgjidhni opsionin 'Rishkruaj / Zevendeso (Overwrite)' per Disaster Recovery ose perdorni Modalitetin e Klonimit.`
+        error: `Pool '${targetName}' already exists. Choose 'Overwrite' for disaster recovery, or use clone mode.`
       });
     } else {
-      warnings.push(`Pool-i ekzistues '${targetName}' do te rishkruhet nga paketa e rikuperimit.`);
+      warnings.push(`The existing pool '${targetName}' will be overwritten by the recovery package.`);
     }
   }
   const rawVdevs = poolConfig.pool.vdevs || [];
@@ -26065,7 +26065,7 @@ app.post("/api/zfs/pools/import", (req, res) => {
     return res.json({
       valid: true,
       status: warnings.length ? "warning" : "success",
-      message: `Konfigurimi i ${isClone ? "klonimit" : "rikuperimit"} eshte i vlefshem per pool '${targetName}'.`,
+      message: `The ${isClone ? "clone" : "recovery"} configuration is valid for pool '${targetName}'.`,
       poolName: targetName,
       summary: {
         originalName: origPoolName,
@@ -26145,7 +26145,7 @@ app.post("/api/zfs/pools/import", (req, res) => {
   return res.json({
     valid: true,
     status: "success",
-    message: isClone ? `Pool '${targetName}' u klonua me sukses nga skedari JSON me ${targetDatasets.length} datasets!` : `Pool '${targetName}' u rikuperua me sukses nga konfigurimi JSON (Disaster Recovery)!`,
+    message: isClone ? `Pool '${targetName}' cloned from the JSON file with ${targetDatasets.length} datasets.` : `Pool '${targetName}' restored from the JSON configuration (disaster recovery).`,
     poolName: targetName,
     pool: newPool,
     datasetsCreated: targetDatasets.length,
@@ -26204,11 +26204,11 @@ app.post("/api/zfs/datasets", async (req, res) => {
     volsize = "50G"
   } = req.body;
   if (!name || !name.trim()) {
-    return res.status(400).json({ error: "Emri i dataset-it eshte i detyrueshem" });
+    return res.status(400).json({ error: "Dataset name is required" });
   }
   const existing = state.datasets.find((d) => d.name === name);
   if (existing) {
-    return res.status(400).json({ error: `Dataset-i '${name}' ekziston tashme!` });
+    return res.status(400).json({ error: `Dataset '${name}' already exists.` });
   }
   const newDs = {
     name,
@@ -26229,7 +26229,7 @@ app.post("/api/zfs/datasets", async (req, res) => {
   };
   state.datasets.push(newDs);
   saveState(state);
-  res.json({ status: "success", message: `Dataset '${name}' u krijua me sukses!`, dataset: newDs });
+  res.json({ status: "success", message: `Dataset '${name}' created.`, dataset: newDs });
 });
 app.patch("/api/zfs/datasets", async (req, res) => {
   if (useRealHost()) {
@@ -26250,7 +26250,7 @@ app.patch("/api/zfs/datasets", async (req, res) => {
   const { name, properties } = req.body;
   if (!name) return res.status(400).json({ error: "Emri i dataset-it mungon" });
   const ds = state.datasets.find((d) => d.name === name);
-  if (!ds) return res.status(404).json({ error: "Dataset nuk u gjet" });
+  if (!ds) return res.status(404).json({ error: "Dataset not found" });
   if (properties.compression) ds.compression = properties.compression;
   if (properties.recordsize) ds.recordsize = properties.recordsize;
   if (properties.quota) ds.quota = properties.quota;
@@ -26259,7 +26259,7 @@ app.patch("/api/zfs/datasets", async (req, res) => {
   if (properties.readonly) ds.readonly = properties.readonly;
   if (properties.mountpoint) ds.mountpoint = properties.mountpoint;
   saveState(state);
-  res.json({ status: "success", message: `Vetite per '${name}' u perditesuan me sukses!`, dataset: ds });
+  res.json({ status: "success", message: `Properties for '${name}' updated.`, dataset: ds });
 });
 app.delete("/api/zfs/datasets", async (req, res) => {
   if (useRealHost()) {
@@ -26273,11 +26273,11 @@ app.delete("/api/zfs/datasets", async (req, res) => {
   const { name } = req.body;
   if (!name) return res.status(400).json({ error: "Emri i dataset mungon" });
   const idx = state.datasets.findIndex((d) => d.name === name);
-  if (idx === -1) return res.status(404).json({ error: "Dataset nuk u gjet" });
+  if (idx === -1) return res.status(404).json({ error: "Dataset not found" });
   state.datasets.splice(idx, 1);
   state.snapshots = state.snapshots.filter((s) => !s.name.startsWith(name));
   saveState(state);
-  res.json({ status: "success", message: `Dataset '${name}' u fshi me sukses.` });
+  res.json({ status: "success", message: `Dataset '${name}' destroyed.` });
 });
 app.get("/api/zfs/snapshots", async (req, res) => {
   if (useRealHost()) {
@@ -26378,7 +26378,7 @@ app.post("/api/zfs/snapshots", async (req, res) => {
   const state = getState();
   const { dataset, snapName } = req.body;
   if (!dataset || !snapName) {
-    return res.status(400).json({ error: "Dataset dhe snapName jane te detyrueshme" });
+    return res.status(400).json({ error: "dataset and snapName are required" });
   }
   if (!validDatasetName(String(dataset)) || !validSnapToken(String(snapName))) {
     return res.status(400).json({ error: "Invalid dataset or snapshot name." });
@@ -26407,7 +26407,7 @@ app.post("/api/zfs/snapshots", async (req, res) => {
   }
   const existing = state.snapshots.find((s) => s.name === fullName);
   if (existing) {
-    return res.status(400).json({ error: `Snapshot '${fullName}' ekziston tashme!` });
+    return res.status(400).json({ error: `Snapshot '${fullName}' already exists.` });
   }
   const now = (/* @__PURE__ */ new Date()).toISOString().replace("T", " ").substring(0, 19);
   const newSnap = {
@@ -26418,7 +26418,7 @@ app.post("/api/zfs/snapshots", async (req, res) => {
   };
   state.snapshots.unshift(newSnap);
   saveState(state);
-  res.json({ status: "success", message: `Snapshot '${fullName}' u krijua!`, snapshot: newSnap });
+  res.json({ status: "success", message: `Snapshot '${fullName}' created.`, snapshot: newSnap });
 });
 app.post("/api/zfs/snapshots/rollback", async (req, res) => {
   const { name } = req.body;
@@ -26438,8 +26438,8 @@ app.post("/api/zfs/snapshots/rollback", async (req, res) => {
   }
   const state = getState();
   const snap = state.snapshots.find((s) => s.name === name);
-  if (!snap) return res.status(404).json({ error: "Snapshot nuk u gjet" });
-  res.json({ status: "success", message: `Dataset u kthye mbrapsht me sukses ne gjendjen e '${name}'!` });
+  if (!snap) return res.status(404).json({ error: "Snapshot not found" });
+  res.json({ status: "success", message: `Dataset rolled back to '${name}'.` });
 });
 app.delete("/api/zfs/snapshots", async (req, res) => {
   const { name } = req.body;
@@ -26455,10 +26455,10 @@ app.delete("/api/zfs/snapshots", async (req, res) => {
   }
   const state = getState();
   const idx = state.snapshots.findIndex((s) => s.name === name);
-  if (idx === -1) return res.status(404).json({ error: "Snapshot nuk u gjet" });
+  if (idx === -1) return res.status(404).json({ error: "Snapshot not found" });
   state.snapshots.splice(idx, 1);
   saveState(state);
-  res.json({ status: "success", message: `Snapshot '${name}' u fshi.` });
+  res.json({ status: "success", message: `Snapshot '${name}' destroyed.` });
 });
 var activeZSendTask = null;
 var zsendHistory = [];
@@ -26483,10 +26483,10 @@ app.post("/api/zfs/zsend/start", (req, res) => {
     preserveProperties = true
   } = req.body;
   if (!sourcePool || !sourceDataset || !targetPool || !targetDataset) {
-    return res.status(400).json({ error: "Mungojne parametrat e burimit ose destinacionit per Z-Send" });
+    return res.status(400).json({ error: "Missing source or target parameters for Z-Send" });
   }
   if (activeZSendTask && activeZSendTask.status === "STREAMING_SNAPSHOT") {
-    return res.status(409).json({ error: "Nje proces ZFS Z-Send eshte tashme duke u ekzekutuar!" });
+    return res.status(409).json({ error: "A ZFS Z-Send process is already running." });
   }
   const migrationId = `zsend_${Date.now()}`;
   const now = Date.now();
@@ -26579,7 +26579,7 @@ app.post("/api/zfs/zsend/start", (req, res) => {
   }, 500);
   res.json({
     status: "success",
-    message: `Migrimi ZFS Z-Send filloi me sukses per ${targetDataset}!`,
+    message: `ZFS Z-Send migration started for ${targetDataset}.`,
     migration: activeZSendTask
   });
 });
@@ -26591,7 +26591,7 @@ app.get("/api/zfs/zsend/status/:id", (req, res) => {
   if (hist) {
     return res.json({ migration: hist });
   }
-  res.status(404).json({ error: "Migrimi Z-Send nuk u gjet" });
+  res.status(404).json({ error: "Z-Send migration not found" });
 });
 app.post("/api/zfs/zsend/abort/:id", (req, res) => {
   if (useRealHost()) return res.status(409).json({ error: "DEMO is off. There is no simulated Z-Send to abort." });
@@ -26601,7 +26601,7 @@ app.post("/api/zfs/zsend/abort/:id", (req, res) => {
     activeZSendTask = null;
     return res.json({ status: "success", message: "Migrimi Z-Send u nderpre." });
   }
-  res.status(404).json({ error: "Nuk ka migrim aktiv me kete ID" });
+  res.status(404).json({ error: "No active migration with this ID" });
 });
 app.get("/api/zfs/arc", (req, res) => {
   if (useRealHost()) return res.json({ arc: readLiveArc() });
@@ -26677,7 +26677,7 @@ options zfs l2arc_noprefetch=${state.arc.tunables.l2arc_noprefetch}
   saveState(state);
   res.json({
     status: "success",
-    message: "Parametrat e ARC dhe L2ARC u aplikuan me sukses!",
+    message: "ARC and L2ARC parameters applied.",
     arc: state.arc,
     modprobeConf: modprobeContent
   });
