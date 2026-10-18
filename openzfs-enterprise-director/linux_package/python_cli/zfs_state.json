@@ -1,0 +1,489 @@
+{
+  "pools": [
+    {
+      "name": "tank-enterprise",
+      "guid": "1839201948201",
+      "health": "ONLINE",
+      "size": "16.0T",
+      "allocated": "4.2T",
+      "free": "11.8T",
+      "frag": "6%",
+      "dedup": "1.00x",
+      "ashift": 12,
+      "status": "Pajisja /dev/sdb u modifikua ne ONLINE. Pool health is monitored.",
+      "scrub_status": "Scrub in progress: 2.4% done, 0 errors, ETA: 01:30:00",
+      "scrub_active": true,
+      "last_scrub": "Just started",
+      "vdevs": [
+        {
+          "type": "raidz2",
+          "name": "raidz2-0",
+          "status": "ONLINE",
+          "disks": [
+            "/dev/sdb",
+            "/dev/sdc",
+            "/dev/sdd",
+            "/dev/sde",
+            "/dev/sdf",
+            "/dev/sdg"
+          ],
+          "capacity": "12.0T"
+        },
+        {
+          "type": "log",
+          "name": "mirror-log-0",
+          "status": "ONLINE",
+          "disks": [
+            "/dev/nvme0n1p1",
+            "/dev/nvme1n1p1"
+          ],
+          "desc": "SLOG ZIL (NVMe Mirror PLP)",
+          "capacity": "64G"
+        },
+        {
+          "type": "cache",
+          "name": "l2arc-0",
+          "status": "ONLINE",
+          "disks": [
+            "/dev/nvme2n1p1"
+          ],
+          "desc": "L2ARC Cache (1.6TB NVMe)",
+          "capacity": "1.6T"
+        },
+        {
+          "type": "special",
+          "name": "special-mirror",
+          "status": "ONLINE",
+          "disks": [
+            "/dev/nvme3n1p1",
+            "/dev/nvme4n1p1"
+          ],
+          "desc": "Special VDEV Metadata (4KB blocks)",
+          "capacity": "480G"
+        }
+      ]
+    },
+    {
+      "name": "fast-nvme-pool",
+      "guid": "9812401829031",
+      "health": "ONLINE",
+      "size": "3.84T",
+      "allocated": "1.12T",
+      "free": "2.72T",
+      "frag": "2%",
+      "dedup": "1.32x",
+      "ashift": 12,
+      "status": "Optimal I/O pipeline. Scrub running (64.2% done).",
+      "scrub_status": "Scrub in progress: 64.2% done, 0 errors, ETA: 00:18:40",
+      "scrub_active": true,
+      "last_scrub": "2026-10-11 15:40:00",
+      "vdevs": [
+        {
+          "type": "mirror",
+          "name": "mirror-0",
+          "status": "ONLINE",
+          "disks": [
+            "/dev/nvme5n1",
+            "/dev/nvme6n1"
+          ],
+          "capacity": "3.84T"
+        }
+      ]
+    }
+  ],
+  "datasets": [
+    {
+      "name": "tank-enterprise/data",
+      "type": "filesystem",
+      "mountpoint": "/tank-enterprise/data",
+      "used": "2.8T",
+      "avail": "11.8T",
+      "refer": "2.8T",
+      "compression": "zstd-3",
+      "compressratio": "1.84x",
+      "recordsize": "128K",
+      "atime": "off",
+      "dedup": "off",
+      "quota": "none",
+      "encryption": "aes-256-gcm",
+      "readonly": "off"
+    },
+    {
+      "name": "tank-enterprise/databases",
+      "type": "filesystem",
+      "mountpoint": "/var/lib/postgresql/data",
+      "used": "840G",
+      "avail": "11.8T",
+      "refer": "840G",
+      "compression": "lz4",
+      "compressratio": "1.42x",
+      "recordsize": "16K",
+      "atime": "off",
+      "dedup": "off",
+      "quota": "2T",
+      "encryption": "aes-256-gcm",
+      "readonly": "off"
+    },
+    {
+      "name": "tank-enterprise/vm-disks/disk-101",
+      "type": "volume",
+      "mountpoint": "/dev/zvol/tank-enterprise/vm-disks/disk-101",
+      "used": "120G",
+      "avail": "11.8T",
+      "refer": "45G",
+      "volsize": "100G",
+      "volblocksize": "8K",
+      "compression": "lz4",
+      "compressratio": "1.65x",
+      "recordsize": "8K",
+      "atime": "off",
+      "dedup": "off",
+      "quota": "none",
+      "encryption": "on",
+      "readonly": "off"
+    },
+    {
+      "name": "fast-nvme-pool/app-cache",
+      "type": "filesystem",
+      "mountpoint": "/fast-nvme-pool/app-cache",
+      "used": "310G",
+      "avail": "2.72T",
+      "refer": "310G",
+      "compression": "lz4",
+      "compressratio": "1.20x",
+      "recordsize": "64K",
+      "atime": "off",
+      "dedup": "off",
+      "quota": "500G",
+      "encryption": "off",
+      "readonly": "off"
+    }
+  ],
+  "snapshots": [
+    {
+      "name": "tank-enterprise/databases@daily-2026-10-11",
+      "used": "4.2G",
+      "refer": "838G",
+      "creation": "2026-10-11 00:00:01"
+    },
+    {
+      "name": "tank-enterprise/data@weekly-2026-10-04",
+      "used": "18.5G",
+      "refer": "2.7T",
+      "creation": "2026-10-04 02:00:00"
+    },
+    {
+      "name": "tank-enterprise/vm-disks/disk-101@snap-pre-upgrade",
+      "used": "1.1G",
+      "refer": "45G",
+      "creation": "2026-10-11 12:30:15"
+    }
+  ],
+  "arc": {
+    "size": 34359738368,
+    "c_max": 77309411328,
+    "c_min": 17179869184,
+    "hits": 184920491,
+    "misses": 8394819,
+    "hit_ratio": 95.66,
+    "mru_size": 18253611008,
+    "mfu_size": 16106127360,
+    "data_size": 28991029248,
+    "metadata_size": 5368709120,
+    "l2_size": 1600000000000,
+    "l2_hits": 28491024,
+    "l2_misses": 5910294,
+    "l2_hit_ratio": 82.8,
+    "tunables": {
+      "zfs_arc_max": 77309411328,
+      "zfs_arc_min": 17179869184,
+      "l2arc_write_max": 419430400,
+      "l2arc_noprefetch": 0,
+      "zfs_arc_sys_free": 1073741824
+    }
+  },
+  "availableDisks": [
+    {
+      "dev": "/dev/sdh",
+      "size": "4.0T",
+      "type": "HDD",
+      "model": "Seagate Exos X16",
+      "serial": "WNA1K284"
+    },
+    {
+      "dev": "/dev/sdi",
+      "size": "4.0T",
+      "type": "HDD",
+      "model": "Seagate Exos X16",
+      "serial": "WNA1K285"
+    },
+    {
+      "dev": "/dev/nvme7n1",
+      "size": "1.92T",
+      "type": "NVMe",
+      "model": "Samsung PM9A3 PLP",
+      "serial": "S6G9NE0R"
+    },
+    {
+      "dev": "/dev/nvme8n1",
+      "size": "1.92T",
+      "type": "NVMe",
+      "model": "Samsung PM9A3 PLP",
+      "serial": "S6G9NE0S"
+    }
+  ],
+  "serviceStatus": {
+    "daemonActive": true,
+    "pid": 14209,
+    "kernelModuleLoaded": true,
+    "uptime": "18d 04h 12m",
+    "installedPath": "/root/zfs-enterprise-suite"
+  },
+  "benchmarks": [
+    {
+      "id": "bench-1791763560436",
+      "pool": "tank-enterprise",
+      "test_type": "Mixed Sync Write + ARC Read (Database Sim)",
+      "seq_read_mb_s": 3510.8,
+      "seq_write_mb_s": 1890.5,
+      "rand_read_iops": 192000,
+      "rand_write_iops": 96500,
+      "avg_latency_ms": 0.17,
+      "arc_hit_pct": 98.2,
+      "timestamp": "2026-10-12 00:06:00"
+    },
+    {
+      "id": "bench-1791762398875",
+      "pool": "tank-enterprise",
+      "test_type": "Mixed Sync Write + ARC Read (Database Sim)",
+      "seq_read_mb_s": 3510.8,
+      "seq_write_mb_s": 1890.5,
+      "rand_read_iops": 192000,
+      "rand_write_iops": 96500,
+      "avg_latency_ms": 0.17,
+      "arc_hit_pct": 98.2,
+      "timestamp": "2026-10-11 23:46:38"
+    },
+    {
+      "id": "bench-1",
+      "pool": "tank-enterprise",
+      "test_type": "Mixed Sync Write + ARC Read (Database Sim)",
+      "seq_read_mb_s": 3420.5,
+      "seq_write_mb_s": 1840.2,
+      "rand_read_iops": 185400,
+      "rand_write_iops": 94200,
+      "avg_latency_ms": 0.18,
+      "arc_hit_pct": 97.4,
+      "timestamp": "2026-10-11 16:30:00"
+    },
+    {
+      "id": "bench-2",
+      "pool": "fast-nvme-pool",
+      "test_type": "Sequential Streaming (1M Block Size)",
+      "seq_read_mb_s": 6850,
+      "seq_write_mb_s": 4200,
+      "rand_read_iops": 420000,
+      "rand_write_iops": 280000,
+      "avg_latency_ms": 0.08,
+      "arc_hit_pct": 99.2,
+      "timestamp": "2026-10-11 14:15:20"
+    }
+  ],
+  "scrubSchedules": [
+    {
+      "id": "sched-1",
+      "poolName": "tank-enterprise",
+      "frequency": "weekly",
+      "cronExpression": "0 2 * * 0",
+      "dayOfWeek": 0,
+      "hour": 2,
+      "minute": 0,
+      "enabled": true,
+      "priority": "normal",
+      "maxDurationHours": 6,
+      "maintenanceWindow": {
+        "startTime": "02:00",
+        "endTime": "08:00",
+        "days": [
+          "Sun"
+        ]
+      },
+      "nextRun": "2026-10-18 02:00:00",
+      "lastRun": "2026-10-11 02:00:00",
+      "lastStatus": "SUCCESS",
+      "description": "Weekly full integrity scrub for production RAIDZ2 storage array",
+      "autoPauseOnHeavyLoad": true
+    },
+    {
+      "id": "sched-2",
+      "poolName": "fast-nvme-pool",
+      "frequency": "biweekly",
+      "cronExpression": "0 3 1,15 * *",
+      "dayOfMonth": 1,
+      "hour": 3,
+      "minute": 0,
+      "enabled": true,
+      "priority": "high",
+      "maxDurationHours": 2,
+      "maintenanceWindow": {
+        "startTime": "03:00",
+        "endTime": "05:00",
+        "days": [
+          "1st",
+          "15th"
+        ]
+      },
+      "nextRun": "2026-10-15 03:00:00",
+      "lastRun": "2026-10-01 03:00:00",
+      "lastStatus": "SUCCESS",
+      "description": "Fast NVMe database mirror scrub window during maintenance period",
+      "autoPauseOnHeavyLoad": false
+    }
+  ],
+  "scrubHistory": [
+    {
+      "id": "scrub-h-1",
+      "poolName": "tank-enterprise",
+      "date": "2026-08-03",
+      "durationMinutes": 142,
+      "durationFormatted": "02h 22m",
+      "dataScrubbedTb": 3.8,
+      "rateMbS": 456.2,
+      "checksumErrors": 0,
+      "readErrors": 0,
+      "writeErrors": 0,
+      "repairedBytes": 0,
+      "status": "COMPLETED",
+      "degradationRiskPct": 5,
+      "hardwareNote": "Optimal run. All 6 SAS HDDs nominal response times."
+    },
+    {
+      "id": "scrub-h-2",
+      "poolName": "tank-enterprise",
+      "date": "2026-08-17",
+      "durationMinutes": 148,
+      "durationFormatted": "02h 28m",
+      "dataScrubbedTb": 3.9,
+      "rateMbS": 449.1,
+      "checksumErrors": 0,
+      "readErrors": 0,
+      "writeErrors": 0,
+      "repairedBytes": 0,
+      "status": "COMPLETED",
+      "degradationRiskPct": 6,
+      "hardwareNote": "Healthy scrub cycle across RAIDZ2-0."
+    },
+    {
+      "id": "scrub-h-3",
+      "poolName": "tank-enterprise",
+      "date": "2026-08-31",
+      "durationMinutes": 154,
+      "durationFormatted": "02h 34m",
+      "dataScrubbedTb": 4,
+      "rateMbS": 442.8,
+      "checksumErrors": 0,
+      "readErrors": 0,
+      "writeErrors": 0,
+      "repairedBytes": 0,
+      "status": "COMPLETED",
+      "degradationRiskPct": 8,
+      "hardwareNote": "Nominal completion, slight capacity increase."
+    },
+    {
+      "id": "scrub-h-4",
+      "poolName": "tank-enterprise",
+      "date": "2026-09-14",
+      "durationMinutes": 165,
+      "durationFormatted": "02h 45m",
+      "dataScrubbedTb": 4.1,
+      "rateMbS": 423.8,
+      "checksumErrors": 0,
+      "readErrors": 0,
+      "writeErrors": 0,
+      "repairedBytes": 0,
+      "status": "COMPLETED",
+      "degradationRiskPct": 14,
+      "hardwareNote": "Mild latency increase detected on /dev/sde during inner cylinder passes."
+    },
+    {
+      "id": "scrub-h-5",
+      "poolName": "tank-enterprise",
+      "date": "2026-09-28",
+      "durationMinutes": 188,
+      "durationFormatted": "03h 08m",
+      "dataScrubbedTb": 4.1,
+      "rateMbS": 372.5,
+      "checksumErrors": 2,
+      "readErrors": 1,
+      "writeErrors": 0,
+      "repairedBytes": 8192,
+      "status": "WARNING",
+      "degradationRiskPct": 48,
+      "hardwareNote": "Self-healed 2 checksum errors via parity on /dev/sde. Sector reallocation triggered."
+    },
+    {
+      "id": "scrub-h-6",
+      "poolName": "tank-enterprise",
+      "date": "2026-10-10",
+      "durationMinutes": 215,
+      "durationFormatted": "03h 35m",
+      "dataScrubbedTb": 4.2,
+      "rateMbS": 334.1,
+      "checksumErrors": 5,
+      "readErrors": 3,
+      "writeErrors": 0,
+      "repairedBytes": 20480,
+      "status": "DEGRADED",
+      "degradationRiskPct": 76,
+      "hardwareNote": "Duration increased +51% from baseline. 5 checksum errors repaired. Device /dev/sde nearing failure threshold!"
+    },
+    {
+      "id": "scrub-h-7",
+      "poolName": "fast-nvme-pool",
+      "date": "2026-09-01",
+      "durationMinutes": 14,
+      "durationFormatted": "00h 14m",
+      "dataScrubbedTb": 0.82,
+      "rateMbS": 1024,
+      "checksumErrors": 0,
+      "readErrors": 0,
+      "writeErrors": 0,
+      "repairedBytes": 0,
+      "status": "COMPLETED",
+      "degradationRiskPct": 2,
+      "hardwareNote": "NVMe Mirror scrub completed at bus speed. 0 errors."
+    },
+    {
+      "id": "scrub-h-8",
+      "poolName": "fast-nvme-pool",
+      "date": "2026-09-15",
+      "durationMinutes": 15,
+      "durationFormatted": "00h 15m",
+      "dataScrubbedTb": 0.85,
+      "rateMbS": 998,
+      "checksumErrors": 0,
+      "readErrors": 0,
+      "writeErrors": 0,
+      "repairedBytes": 0,
+      "status": "COMPLETED",
+      "degradationRiskPct": 2,
+      "hardwareNote": "NVMe health 100%. Latency < 0.05ms."
+    },
+    {
+      "id": "scrub-h-9",
+      "poolName": "fast-nvme-pool",
+      "date": "2026-10-01",
+      "durationMinutes": 16,
+      "durationFormatted": "00h 16m",
+      "dataScrubbedTb": 0.89,
+      "rateMbS": 975,
+      "checksumErrors": 0,
+      "readErrors": 0,
+      "writeErrors": 0,
+      "repairedBytes": 0,
+      "status": "COMPLETED",
+      "degradationRiskPct": 3,
+      "hardwareNote": "Optimal NVMe mirror integrity."
+    }
+  ]
+}

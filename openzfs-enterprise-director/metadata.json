@@ -1,0 +1,6 @@
+{
+  "name": "OpenZFS Enterprise Director",
+  "description": "Enterprise Linux ZFS storage management suite with CLI wizard, ARC/L2ARC/SLOG tuning, pool and dataset lifecycle controls, and unified web dashboard.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

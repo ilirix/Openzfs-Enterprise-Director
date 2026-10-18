@@ -1,0 +1,13 @@
+[package]
+name = "zfs-enterprise-director"
+version = "2.0.0"
+edition = "2021"
+authors = ["OpenZFS Enterprise Director"]
+description = "Ultra-fast, high-performance Rust OpenZFS Web Server, Telemetry & Benchmark Engine"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+axum = "0.7"
+tower-http = { version = "0.5", features = ["cors", "fs", "trace"] }

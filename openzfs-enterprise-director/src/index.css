@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: #090d16;
+    color: #f1f5f9;
+    overflow-x: hidden;
+  }
+}
+
+/* Custom scrollbars for enterprise telemetry & logs */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b1120;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* ==========================================================================
+   GPU LIGHTWEIGHT OPTIMIZATIONS (High FPS Telemetry, 0% GPU Bottleneck)
+   Satisfies: "Ne pc ky hapet faqja ngarkon shume GPU. Beje faqjen me light por mos ul refresh rate"
+   ========================================================================== */
+
+/* 1. Neutralize expensive GPU Gaussian backdrop filters */
+.backdrop-blur-xs,
+.backdrop-blur-sm,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl,
+.backdrop-blur-2xl,
+.backdrop-blur-3xl {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* 2. Neutralize continuous 60fps compositor-thrashing CSS animations */
+/* Infinite @keyframes ping & pulse force continuous 60-144fps GPU compositor cycles */
+.animate-ping {
+  animation: none !important;
+  opacity: 0.8 !important;
+}
+
+.animate-pulse {
+  animation: none !important;
+}
+
+/* 3. Tame massive 50px blur box-shadows to crisp, GPU-light outlines */
+.shadow-2xl {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3) !important;
+}
+
+.shadow-xl {
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* 4. Optimize fast-updating progress bars: avoid heavy layout reflows */
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* 5. GPU render hint */
+.gpu-light-card {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
